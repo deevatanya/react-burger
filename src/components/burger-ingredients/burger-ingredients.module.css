@@ -1,0 +1,13 @@
+.column {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 600px;
+
+}
+
+.fold {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}

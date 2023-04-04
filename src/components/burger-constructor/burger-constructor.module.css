@@ -1,0 +1,31 @@
+.column {
+    width: 600px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 40px;
+    position: relative;
+}
+.item {
+    margin: 0 16px 8px 16px;
+    display: flex;
+    align-items: center;
+}
+.total {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.price {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.price svg {
+    width: 33px;
+    height: 33px;
+}
+.button {
+    position: absolute;
+    right: 0;
+}
