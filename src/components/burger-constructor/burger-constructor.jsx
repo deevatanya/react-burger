@@ -1,99 +1,41 @@
-import React from 'react';
-import { DragIcon, CurrencyIcon, ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
+import { CurrencyIcon, ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import ConstructorItem from '../constructor-item/constructor-item';
 import style from './burger-constructor.module.css';
 
-function BurgerConstructor() {
+function BurgerConstructor({ constructorCart }) {
+    const bunItem = useMemo(() => constructorCart.find((obj) => obj.type === 'bun'), [constructorCart]);
+    const unLockedItems = useMemo(() => constructorCart.filter((obj) => obj.type === 'main' || obj.type === 'sauce'), [constructorCart]);
     return (
         <div className={style.column}>
             <div className='mt-25'></div>
-
             <section>
                 <div className={style.item}>
-                    <div className='ml-8'>
+                    <div className='ml-8 top'>
                         <ConstructorElement
                         type="top"
                         isLocked={true}
-                        text="Краторная булка N-200i (верх)"
-                        price={20}
-                        thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
-                    >
-                    </ConstructorElement></div>
-                </div>
-                <div className={style.item}>
-                    <div className='mr-3'>
-                        <DragIcon type="primary" />
-                    </div>
-                    <ConstructorElement
-                        text="Соус традиционный галактический"
-                        price={30}
-                        thumbnail={'https://code.s3.yandex.net/react/code/sauce-03.png'}
-                    >
-                    </ConstructorElement>
-                </div>
-                <div className={style.item}>
-                    <div className='mr-3'>
-                        <DragIcon type="primary" />
-                    </div>
-                    <ConstructorElement
-                        text="Мясо бессмертных моллюсков Protostomia"
-                        price={30}
-                        thumbnail={'https://code.s3.yandex.net/react/code/meat-02.png'}
-                    >
-                    </ConstructorElement>
-                </div>
-                <div className={style.item}>
-                    <div className='mr-3'>
-                        <DragIcon type="primary" />
-                    </div>
-                    <ConstructorElement
-                        text="Мясо бессмертных моллюсков Protostomia"
-                        price={30}
-                        thumbnail={'https://code.s3.yandex.net/react/code/meat-02.png'}
-                    >
-                    </ConstructorElement>
-                </div>
-                <div className={style.item}>
-                    <div className='mr-3'>
-                        <DragIcon type="primary" />
-                    </div>
-                    <ConstructorElement
-                        text="Плоды Фалленианского дерева"
-                        price={80}
-                        thumbnail={'https://code.s3.yandex.net/react/code/sp_1.png'}
+                        text={bunItem.name}
+                        price={bunItem.price}
+                        thumbnail={bunItem.image}
                         >
-                    </ConstructorElement>
-                </div>
-                <div className={style.item}>
-                    <div className='mr-3'>
-                        <DragIcon type="primary" />
+                        </ConstructorElement>
                     </div>
-                    <ConstructorElement
-                        text="Хрустящие минеральные кольца"
-                        price={80}
-                        thumbnail={'https://code.s3.yandex.net/react/code/mineral_rings.png'}
-                        >
-                    </ConstructorElement>
-                </div>
+                </div>   
+                        
+                {unLockedItems.map(i => (
+                   <ConstructorItem name={i.name} price={i.price} image={i.image} key={i._id} />
+                ))}
+
                 <div className={style.item}>
-                    <div className='mr-3'>
-                        <DragIcon type="primary" />
-                    </div>
-                    <ConstructorElement
-                        text="Хрустящие минеральные кольца"
-                        price={80}
-                        thumbnail={'https://code.s3.yandex.net/react/code/mineral_rings.png'}
-                        >
-                    </ConstructorElement>
-                </div>
-                <div className={style.item}>
-                    <div className='ml-8'>
+                    <div className='ml-8 bottom'>
                         <ConstructorElement
                             type="bottom"
                             isLocked={true}
-                            text="Краторная булка N-200i (низ)"
-                            price={20}
-                            thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
+                            text={bunItem.name}
+                            price={bunItem.price}
+                            thumbnail={bunItem.image}
                             >
                         </ConstructorElement>
                     </div>  
@@ -119,3 +61,20 @@ function BurgerConstructor() {
 }
 
 export default BurgerConstructor;
+
+BurgerConstructor.propTypes = {
+    constructorCart: PropTypes.arrayOf(PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        image: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        proteins: PropTypes.number,
+        fat: PropTypes.number,
+        carbohydrates: PropTypes.number,
+        calories: PropTypes.number,
+        image_mobile: PropTypes.string,
+        image_large: PropTypes.string,
+        __v: PropTypes.number
+      })).isRequired
+};

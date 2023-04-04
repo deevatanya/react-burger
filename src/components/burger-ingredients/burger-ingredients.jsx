@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCard from '../ingredient-card/ingredient-card';
 import style from './burger-ingredients.module.css';
 
 function BurgerIngredients({ ingredients }) {
     const [current, setCurrent] = React.useState('one');
-    const mains = ingredients.filter((obj) => obj.type === 'main');
-    const buns = ingredients.filter((obj) => obj.type === 'bun');
-    const sauces = ingredients.filter((obj) => obj.type === 'sauce');
+
+    const mains = useMemo(() => ingredients.filter((obj) => obj.type === 'main'), [ingredients]);
+    const buns = useMemo(() => ingredients.filter((obj) => obj.type === 'bun'), [ingredients]);
+    const sauces = useMemo(() => ingredients.filter((obj) => obj.type === 'sauce'), [ingredients]);
 
     return (
         <div className={style.column}>
@@ -67,3 +69,20 @@ function BurgerIngredients({ ingredients }) {
 }
 
 export default BurgerIngredients;
+
+BurgerIngredients.propTypes = {
+    ingredients: PropTypes.arrayOf(PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        image: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        proteins: PropTypes.number,
+        fat: PropTypes.number,
+        carbohydrates: PropTypes.number,
+        calories: PropTypes.number,
+        image_mobile: PropTypes.string,
+        image_large: PropTypes.string,
+        __v: PropTypes.number
+      })).isRequired
+};
