@@ -6,20 +6,23 @@
     flex-direction: column;
     margin-left: 40px;
     position: relative;
-    overflow-y: scroll;
 }
-.column::-webkit-scrollbar
+section {
+    overflow-y: scroll;
+    height: 716px;
+}
+section::-webkit-scrollbar
 {
     width: 8px;
 	background-color: #8585AD;
 }
-.column::-webkit-scrollbar-track
+section::-webkit-scrollbar-track
 {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 	border-radius: 10px;
 	background-color: #2F2F37;
 }
-.column::-webkit-scrollbar-thumb
+section::-webkit-scrollbar-thumb
 {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
 	background-color: #555;

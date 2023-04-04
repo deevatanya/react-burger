@@ -9,24 +9,24 @@ function AppHeader() {
             <Logo />
         </div>
         <nav className={style.menu}>
-            <div className={style.item}>
+            <a href='https://react.dev/' className={style.item}>
                 <BurgerIcon type="primary" />
                 <p className="text text_type_main-default">
                     Конструктор
                 </p>
-            </div>
-            <div className={style.item}>
+            </a>
+            <a href='https://react.dev' className={style.item}>
                 <ListIcon type="secondary" />
                 <p className="text text_type_main-default text_color_inactive">
                     Лента заказов
                 </p>
-            </div>
-            <div className={style.item}>
+            </a>
+            <a href='https://react.dev/' className={style.item}>
                 <ProfileIcon type="secondary" />
                 <p className="text text_type_main-default text_color_inactive">
                     Личный кабинет
                 </p>
-            </div>
+            </a>
         </nav>
     </header>
     )

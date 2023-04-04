@@ -5,6 +5,8 @@ import ConstructorItem from '../constructor-item/constructor-item';
 import style from './burger-constructor.module.css';
 
 function BurgerConstructor({ constructorCart }) {
+
+    const totalValue = useMemo(() => constructorCart.reduce((a, j) => a + (j.price || 0), 0), [constructorCart]);
     const bunItem = useMemo(() => constructorCart.find((obj) => obj.type === 'bun'), [constructorCart]);
     const unLockedItems = useMemo(() => constructorCart.filter((obj) => obj.type === 'main' || obj.type === 'sauce'), [constructorCart]);
     return (
@@ -46,7 +48,7 @@ function BurgerConstructor({ constructorCart }) {
             <div className={style.total}>
                 <div className={style.price}>
                     <p className="text text_type_main-large mr-2">
-                        600
+                        {totalValue}
                     </p>
                     <CurrencyIcon type="primary" />
                 </div>
