@@ -10,7 +10,7 @@
 .body:hover {
     border: 1px dashed #4C4CFF;
 }
-img {
+.body img {
     margin: 0 auto;
 }
 .name {
