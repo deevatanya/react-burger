@@ -2,8 +2,8 @@ import React from 'react';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-
-const urlIngrs = 'https://norma.nomoreparties.space/api/ingredients';
+import { getData } from '../../utils/utils';
+import { constants } from '../../constants';
 
 function App() {
   const [state, setState] = React.useState({ successGetData: false });
@@ -11,23 +11,17 @@ function App() {
   const [constructorCart, setConstructorCart] = React.useState([]);
 
   React.useEffect(() => {
-    getData();
+    async function dataInit() {
+      const data = await getData(constants.URL_INGREDIENTS);
+    
+      setState({ successGetData: data.success });
+      setIngredients([...data.data]);
+      //временно
+      setConstructorCart([...data.data]);
+    }
+
+    dataInit();
   }, []);
-
-  const getData = () => {
-    fetch(urlIngrs)
-      .then(res => res.json())
-      .then(data => {
-        setState({ successGetData: data.success });
-        setIngredients([...data.data]);
-
-        //временно
-        setConstructorCart([...data.data]);
-      })
-      .catch(e => {
-        console.log('Ошибка запроса данных: ', e);
-      });
-  };
 
   return (
     <div className="app">

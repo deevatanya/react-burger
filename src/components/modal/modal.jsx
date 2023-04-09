@@ -6,11 +6,12 @@ import style from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 
 const modalRoot = document.getElementById("react-modals");
+const escapeKeyCode = 27;
 
 function Modal({ onClose, children, header }) {
     React.useEffect(() => {
         const close = (e) => {
-          if(e.keyCode === 27){
+          if (e.keyCode === escapeKeyCode) {
             onClose();
           }
         }
