@@ -1,0 +1,32 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image {
+    height: 240px;
+    width: 520px;
+    position: relative;
+}
+.image img {
+    position: absolute;
+    margin: 0 20px
+}
+.title {
+    width: 520px;
+}
+.title p {
+    text-align: center;
+}
+.info {
+    width: 520px;
+    display: flex;
+    justify-content: space-between;
+}
+.info_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}

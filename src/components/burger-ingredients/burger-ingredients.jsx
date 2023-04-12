@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCard from '../ingredient-card/ingredient-card';
 import style from './burger-ingredients.module.css';
 
 function BurgerIngredients({ ingredients }) {
-    const [current, setCurrent] = React.useState('one');
+    const [current, setCurrent] = useState('one');
 
     const mains = useMemo(() => ingredients.filter((obj) => obj.type === 'main'), [ingredients]);
     const buns = useMemo(() => ingredients.filter((obj) => obj.type === 'bun'), [ingredients]);
@@ -39,7 +39,10 @@ function BurgerIngredients({ ingredients }) {
                     </p>
                     <div className={style.fold}>
                         {buns.map(bun => (
-                            <IngredientCard key={bun._id} image={bun.image} price={bun.price} name={bun.name} type={bun.type}/>
+                            <IngredientCard 
+                                key={bun._id} 
+                                info={bun} 
+                            />
                         ))}
                     </div>
                 </div>
@@ -49,7 +52,10 @@ function BurgerIngredients({ ingredients }) {
                     </p>
                     <div className={style.fold}>
                         {sauces.map(sauce => (
-                            <IngredientCard key={sauce._id} image={sauce.image} price={sauce.price} name={sauce.name} type={sauce.type}/>
+                            <IngredientCard 
+                                key={sauce._id}
+                                info={sauce} 
+                            />
                         ))}
                     </div>
                 </div>           
@@ -59,7 +65,10 @@ function BurgerIngredients({ ingredients }) {
                     </p>
                     <div className={style.fold}>
                         {mains.map(main => (
-                            <IngredientCard key={main._id} image={main.image} price={main.price} name={main.name} type={main.type}/>
+                            <IngredientCard 
+                                key={main._id} 
+                                info={main} 
+                            />
                         ))}
                     </div>
                 </div>
