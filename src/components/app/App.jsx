@@ -4,6 +4,7 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { getData } from '../../utils/utils';
 import { constants } from '../../constants';
+import { BurgerConstructorContext } from '../../services/burgerConstructorContext';
 
 function App() {
   const [state, setState] = React.useState({ successGetData: false });
@@ -31,9 +32,10 @@ function App() {
           <BurgerIngredients 
             ingredients={ingredients}
           />
-          <BurgerConstructor 
-            constructorCart={constructorCart} 
-          />
+          <BurgerConstructorContext.Provider value={[constructorCart, setConstructorCart]}>
+            <BurgerConstructor />
+          </BurgerConstructorContext.Provider>
+          
         </div>
       }
     </div>
