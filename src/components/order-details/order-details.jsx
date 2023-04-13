@@ -1,11 +1,12 @@
 import style from './order-details.module.css';
+import PropTypes from 'prop-types';
 
-function OrderDetails() {
+function OrderDetails({orderNumber}) {
     return (
         <div className={style.body}>
             <div className='mt-4'></div>
             <div className={style.number}>
-                <p className="text text_type_digits-large">034536</p>
+                <p className="text text_type_digits-large">{orderNumber}</p>
             </div>
             <div className='mt-8'></div>
             <div className={style.number_description}>
@@ -46,3 +47,7 @@ function OrderDetails() {
 }
 
 export default OrderDetails;
+
+OrderDetails.propTypes = {
+    orderNumber: PropTypes.number.isRequired,
+};

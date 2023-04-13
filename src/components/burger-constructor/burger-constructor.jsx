@@ -1,15 +1,17 @@
 import { useState, useMemo, useContext } from 'react';
-// import PropTypes from 'prop-types';
 import { CurrencyIcon, ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import ConstructorItem from '../constructor-item/constructor-item';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import style from './burger-constructor.module.css';
 import { BurgerConstructorContext } from '../../services/burgerConstructorContext';
+import { postData } from '../../utils/utils';
+import { constants } from '../../constants';
 
 function BurgerConstructor() {
     const [constructorCart] = useContext(BurgerConstructorContext);
     const [modalVisible, setModalVisible] = useState({ visible: false });
+    const [orderNumber, setOrderNumber] = useState(null);
 
     const bunItem = useMemo(() => constructorCart.find((obj) => obj.type === 'bun'), [constructorCart]);
     const unLockedItems = useMemo(() => constructorCart.filter((obj) => obj.type !== 'bun'), [constructorCart]);
@@ -22,6 +24,20 @@ function BurgerConstructor() {
             unLockedItems
         ]
     );
+    const handleOrderClick = () => {
+        let idsArray = unLockedItems.map(i => i._id);
+        idsArray.push(bunItem._id);
+        const body = { "ingredients": idsArray };
+
+        async function dataInit() {
+            const data = await postData(constants.URL_ORDERS, body);
+
+            setOrderNumber(data.order.number);
+            handleOpenModal();
+          }
+      
+          dataInit();
+    }
 
     const handleOpenModal = () => {
         setModalVisible({ visible: true });
@@ -32,7 +48,7 @@ function BurgerConstructor() {
 
     const modalOrder = (
         <Modal onClose={handleCloseModal} > 
-            <OrderDetails />
+            <OrderDetails orderNumber={orderNumber}/>
         </Modal>
     );
 
@@ -83,7 +99,7 @@ function BurgerConstructor() {
                         <CurrencyIcon type="primary" />
                     </div>
                     <div className={style.button}>            
-                        <Button htmlType="button" type="primary" size="medium" onClick={handleOpenModal}>
+                        <Button htmlType="button" type="primary" size="medium" onClick={handleOrderClick}>
                             Оформить заказ
                         </Button>
                     </div>
