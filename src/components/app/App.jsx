@@ -13,11 +13,11 @@ function App() {
 
   React.useEffect(() => {
     async function dataInit() {
-      const data = await getData(constants.URL_INGREDIENTS);
+      const data = await getData(`${constants.URL}/ingredients`);
     
       setState({ successGetData: data.success });
       setIngredients([...data.data]);
-      //временно
+      // временно
       setConstructorCart([...data.data]);
     }
 

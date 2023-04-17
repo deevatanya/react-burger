@@ -26,11 +26,12 @@ function BurgerConstructor() {
     );
     const handleOrderClick = () => {
         let idsArray = unLockedItems.map(i => i._id);
+        idsArray.unshift(bunItem._id);
         idsArray.push(bunItem._id);
         const body = { "ingredients": idsArray };
 
         async function dataInit() {
-            const data = await postData(constants.URL_ORDERS, body);
+            const data = await postData(`${constants.URL}/orders`, body);
 
             setOrderNumber(data.order.number);
             handleOpenModal();
@@ -111,19 +112,3 @@ function BurgerConstructor() {
 
 export default BurgerConstructor;
 
-// BurgerConstructor.propTypes = {
-//     constructorCart: PropTypes.arrayOf(PropTypes.shape({
-//         _id: PropTypes.string.isRequired,
-//         image: PropTypes.string.isRequired,
-//         name: PropTypes.string.isRequired,
-//         type: PropTypes.string.isRequired,
-//         price: PropTypes.number.isRequired,
-//         proteins: PropTypes.number,
-//         fat: PropTypes.number,
-//         carbohydrates: PropTypes.number,
-//         calories: PropTypes.number,
-//         image_mobile: PropTypes.string,
-//         image_large: PropTypes.string,
-//         __v: PropTypes.number
-//       })).isRequired
-// };
