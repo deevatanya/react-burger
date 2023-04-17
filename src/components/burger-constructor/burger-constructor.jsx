@@ -1,20 +1,44 @@
-import { useState, useMemo } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useMemo, useContext } from 'react';
 import { CurrencyIcon, ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import ConstructorItem from '../constructor-item/constructor-item';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import style from './burger-constructor.module.css';
+import { BurgerConstructorContext } from '../../services/burgerConstructorContext';
+import { postData } from '../../utils/utils';
+import { constants } from '../../constants';
 
-function BurgerConstructor({ constructorCart }) {
+function BurgerConstructor() {
+    const [constructorCart] = useContext(BurgerConstructorContext);
     const [modalVisible, setModalVisible] = useState({ visible: false });
+    const [orderNumber, setOrderNumber] = useState(null);
 
     const bunItem = useMemo(() => constructorCart.find((obj) => obj.type === 'bun'), [constructorCart]);
-    const unLockedItems = useMemo(() => constructorCart.filter((obj) => obj.type === 'sauce'), [constructorCart]);
+    const unLockedItems = useMemo(() => constructorCart.filter((obj) => obj.type !== 'bun'), [constructorCart]);
+
     const totalValue = useMemo(() => {
         const sum = unLockedItems.reduce((a, j) => a + (j.price || 0), 0) 
         return sum + bunItem.price * 2
-    }   , [bunItem, unLockedItems]);
+        }, [
+            bunItem, 
+            unLockedItems
+        ]
+    );
+    const handleOrderClick = () => {
+        let idsArray = unLockedItems.map(i => i._id);
+        idsArray.unshift(bunItem._id);
+        idsArray.push(bunItem._id);
+        const body = { "ingredients": idsArray };
+
+        async function dataInit() {
+            const data = await postData(`${constants.URL}/orders`, body);
+
+            setOrderNumber(data.order.number);
+            handleOpenModal();
+          }
+      
+          dataInit();
+    }
 
     const handleOpenModal = () => {
         setModalVisible({ visible: true });
@@ -25,7 +49,7 @@ function BurgerConstructor({ constructorCart }) {
 
     const modalOrder = (
         <Modal onClose={handleCloseModal} > 
-            <OrderDetails />
+            <OrderDetails orderNumber={orderNumber}/>
         </Modal>
     );
 
@@ -35,12 +59,13 @@ function BurgerConstructor({ constructorCart }) {
             <div className={style.column}>
                 <div className='mt-25'></div>
                 <section>
+                    
                     <div className={style.item}>
                         <div className='ml-8 top'>
                             <ConstructorElement
                             type="top"
                             isLocked={true}
-                            text={bunItem.name}
+                            text={`${bunItem.name} (верх)`}
                             price={bunItem.price}
                             thumbnail={bunItem.image}
                             >
@@ -57,7 +82,7 @@ function BurgerConstructor({ constructorCart }) {
                             <ConstructorElement
                                 type="bottom"
                                 isLocked={true}
-                                text={bunItem.name}
+                                text={`${bunItem.name} (низ)`}
                                 price={bunItem.price}
                                 thumbnail={bunItem.image}
                                 >
@@ -75,7 +100,7 @@ function BurgerConstructor({ constructorCart }) {
                         <CurrencyIcon type="primary" />
                     </div>
                     <div className={style.button}>            
-                        <Button htmlType="button" type="primary" size="medium" onClick={handleOpenModal}>
+                        <Button htmlType="button" type="primary" size="medium" onClick={handleOrderClick}>
                             Оформить заказ
                         </Button>
                     </div>
@@ -87,19 +112,3 @@ function BurgerConstructor({ constructorCart }) {
 
 export default BurgerConstructor;
 
-BurgerConstructor.propTypes = {
-    constructorCart: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        image: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        proteins: PropTypes.number,
-        fat: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        calories: PropTypes.number,
-        image_mobile: PropTypes.string,
-        image_large: PropTypes.string,
-        __v: PropTypes.number
-      })).isRequired
-};

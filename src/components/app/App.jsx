@@ -4,6 +4,7 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { getData } from '../../utils/utils';
 import { constants } from '../../constants';
+import { BurgerConstructorContext } from '../../services/burgerConstructorContext';
 
 function App() {
   const [state, setState] = React.useState({ successGetData: false });
@@ -12,11 +13,11 @@ function App() {
 
   React.useEffect(() => {
     async function dataInit() {
-      const data = await getData(constants.URL_INGREDIENTS);
+      const data = await getData(`${constants.URL}/ingredients`);
     
       setState({ successGetData: data.success });
       setIngredients([...data.data]);
-      //временно
+      // временно
       setConstructorCart([...data.data]);
     }
 
@@ -31,9 +32,10 @@ function App() {
           <BurgerIngredients 
             ingredients={ingredients}
           />
-          <BurgerConstructor 
-            constructorCart={constructorCart} 
-          />
+          <BurgerConstructorContext.Provider value={[constructorCart, setConstructorCart]}>
+            <BurgerConstructor />
+          </BurgerConstructorContext.Provider>
+          
         </div>
       }
     </div>

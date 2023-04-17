@@ -1,3 +1,3 @@
 export const constants = {
-    URL_INGREDIENTS: 'https://nora.nomoreparties.space/api/ingredients',
+    URL: 'https://norma.nomoreparties.space/api'
 }
