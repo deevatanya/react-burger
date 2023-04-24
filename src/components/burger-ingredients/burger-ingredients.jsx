@@ -1,15 +1,24 @@
-import { useState, useMemo } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useMemo, useEffect } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCard from '../ingredient-card/ingredient-card';
 import style from './burger-ingredients.module.css';
+import { constants } from '../../constants';
+import { useSelector, useDispatch } from 'react-redux';
+import { getIngredients } from '../../services/actions/ingredients';
 
-function BurgerIngredients({ ingredients }) {
-    const [current, setCurrent] = useState('one');
+function BurgerIngredients() {
+    const [current, setCurrent] = useState('buns');
+    const ingredients = useSelector(state => state.ingredients.ingredientsList);
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+      if(!ingredients.length) dispatch(getIngredients(`${constants.URL}/ingredients`))
+    }, [dispatch, ingredients]);
 
     const mains = useMemo(() => ingredients.filter((obj) => obj.type === 'main'), [ingredients]);
     const buns = useMemo(() => ingredients.filter((obj) => obj.type === 'bun'), [ingredients]);
     const sauces = useMemo(() => ingredients.filter((obj) => obj.type === 'sauce'), [ingredients]);
+    const scroll = (type) => document.getElementById(type).scrollIntoView({behavior: "smooth", block: "start"});
 
     return (
         <div className={style.column}>
@@ -21,20 +30,29 @@ function BurgerIngredients({ ingredients }) {
    
 
             <div style={{display: 'flex'}} className='mt-5 mb-5'>
-                <Tab value="one" active={current === 'one'} onClick={setCurrent}>
+                <Tab value="buns" active={current === 'buns'} onClick={() => {
+                    setCurrent('buns'); 
+                    scroll('buns')
+                    }}>
                     Булки
                 </Tab>
-                <Tab value="two" active={current === 'two'} onClick={setCurrent}>
+                <Tab value="sauces" active={current === 'sauces'} onClick={() => {
+                    setCurrent('sauces'); 
+                    scroll('sauces')
+                    }}>
                     Соусы
                 </Tab>
-                <Tab value="three" active={current === 'three'} onClick={setCurrent}>
+                <Tab value="mains" active={current === 'mains'} onClick={() => {
+                    setCurrent('mains'); 
+                    scroll('mains')
+                    }}>
                     Начинки
                 </Tab>
             </div>
 
             <section>
-                <div className='mt-5 mb-5'>
-                    <p className="text text_type_main-medium">
+                <div className='mt-5 mb-5' id='buns' >
+                    <p className="text text_type_main-medium" >
                         Булки
                     </p>
                     <div className={style.fold}>
@@ -46,7 +64,7 @@ function BurgerIngredients({ ingredients }) {
                         ))}
                     </div>
                 </div>
-                <div className='mt-5 mb-5'>
+                <div className='mt-5 mb-5' id='sauces' >
                     <p className="text text_type_main-medium">
                         Соусы
                     </p>
@@ -59,7 +77,7 @@ function BurgerIngredients({ ingredients }) {
                         ))}
                     </div>
                 </div>           
-                <div className='mt-5 mb-5'>
+                <div className='mt-5 mb-5' id='mains' >
                     <p className="text text_type_main-medium">
                         Начинки
                     </p>
@@ -78,20 +96,3 @@ function BurgerIngredients({ ingredients }) {
 }
 
 export default BurgerIngredients;
-
-BurgerIngredients.propTypes = {
-    ingredients: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        image: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        proteins: PropTypes.number,
-        fat: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        calories: PropTypes.number,
-        image_mobile: PropTypes.string,
-        image_large: PropTypes.string,
-        __v: PropTypes.number
-      })).isRequired
-};

@@ -1,12 +1,13 @@
-import PropTypes from 'prop-types';
 import style from './ingredient-details.module.css';
+import { useSelector } from 'react-redux';
 
-function IngredientDetails({ calories, proteins, fat, carbohydrates, image, type, name }) {
+function IngredientDetails() {
+    const { calories, proteins, fat, carbohydrates, image_large, type, name } = useSelector(state => state.ingredientDetails);
     return(
         <div className={style.body}>
 
             <div className={style.image}>
-                <img src={image} alt={type} />
+                <img src={image_large} alt={type} />
             </div>
             <div className='mt-4'></div>
             <div className={style.title}>
@@ -56,13 +57,3 @@ function IngredientDetails({ calories, proteins, fat, carbohydrates, image, type
 }
 
 export default IngredientDetails;
-
-IngredientDetails.propTypes = {
-    image: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    calories: PropTypes.number.isRequired,
-};

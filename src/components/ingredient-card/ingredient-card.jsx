@@ -4,40 +4,42 @@ import Modal from '../modal/modal';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './ingredient-card.module.css';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import { useDispatch } from 'react-redux';
+import { SET_INGREDIENT_DETAILS, REMOVE_INGREDIENT_DETAILS } from '../../services/actions/ingredientDetails';
+import { useDrag } from 'react-dnd';
 
 function IngredientCard({ info }) {
     const [modalVisible, setModalVisible] = React.useState({ visible: false });
-    const { image, price, name, type, calories, proteins, fat, carbohydrates, image_large } = info;
-
+    const { image, price, name, type, count } = info;
+    const dispatch = useDispatch();
     const handleOpenModal = () => {
         setModalVisible({ visible: true });
+        dispatch({type: SET_INGREDIENT_DETAILS, info})
     }
     const handleCloseModal = () => {
         setModalVisible({ visible: false });
+        dispatch({type: REMOVE_INGREDIENT_DETAILS, info})
     }
-
+    const [, dragRef] = useDrag({
+        type: 'ingredient',
+        item: { ...info }
+    });
     const modalHeader = 'Детали ингредиента';
     const modalIngs = (
         <Modal onClose={handleCloseModal} header={modalHeader}> 
-            <IngredientDetails 
-                calories ={calories} 
-                proteins={proteins} 
-                fat={fat} 
-                carbohydrates={carbohydrates}
-                image={image_large} 
-                type={type}
-                name={name}
-            />
+            <IngredientDetails />
         </Modal>
     );
 
     return (
         <>
             { modalVisible.visible ? modalIngs : null }
-            <div className={`${style.body} ml-3 mr-3 mt-4 mb-4`}  onClick={handleOpenModal}>
+            <div className={`${style.body} ml-3 mr-3 mt-4 mb-4`} ref={dragRef} onClick={handleOpenModal}>
+                { count ? (
                 <div className={style.counter}>
-                    <Counter count={1} size="default" extraClass="m-1" />
+                    <Counter count={count} size="default" extraClass="m-1" />
                 </div>
+                ) : null}
 
                 <img src={image} alt={type} />
 
