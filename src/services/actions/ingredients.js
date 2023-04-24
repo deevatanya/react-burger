@@ -3,8 +3,10 @@ import { getData } from '../../utils/utils';
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
 export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
+export const CHANGE_COUNT_BUN = 'CHANGE_COUNT_BUN';
 export const INCREASE_COUNT = 'INCREASE_COUNT';
 export const DECREASE_COUNT = 'DECREASE_COUNT';
+export const REMOVE_COUNTS = 'REMOVE_COUNTS';
 
 export function getIngredients(URL) {
     return function(dispatch) {

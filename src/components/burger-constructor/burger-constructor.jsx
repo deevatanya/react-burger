@@ -1,147 +1,193 @@
-import { useState, useMemo } from 'react';
-import { CurrencyIcon, ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useState, useMemo, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useDrop } from 'react-dnd';
+
+import { 
+  CurrencyIcon, 
+  ConstructorElement, 
+  Button 
+} from '@ya.praktikum/react-developer-burger-ui-components';
 import ConstructorItem from '../constructor-item/constructor-item';
-import { ADD_UNLOCKED_INGREDIENT, ADD_BUN_INGREDIENT } from '../../services/actions/constructor';
-import { INCREASE_COUNT } from '../../services/actions/ingredients';
-import { SET_ORDER } from '../../services/actions/order';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import style from './burger-constructor.module.css';
 import { constants } from '../../constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { useDrop } from 'react-dnd';
+
+import { 
+  ADD_UNLOCKED_INGREDIENT, 
+  ADD_BUN_INGREDIENT, 
+  DELETE_ALL_INGREDIENTS,
+  UPDATE_UNLOCKED
+} from '../../services/actions/constructor';
+import { 
+  CHANGE_COUNT_BUN, 
+  INCREASE_COUNT, 
+  REMOVE_COUNTS 
+} from '../../services/actions/ingredients';
 import { postOrder } from '../../services/actions/order';
 
 function BurgerConstructor() {
-    const [modalVisible, setModalVisible] = useState({ visible: false });
+  const [modalVisible, setModalVisible] = useState({ visible: false });
+  const dispatch = useDispatch();
+  const getUnLockedItems = (state) => state.constructor.unLocked;
+  const getBunItem = (state) => state.constructor.bun;
+  const unLocked = useSelector(getUnLockedItems);
+  const bun = useSelector(getBunItem);
 
-    const dispatch = useDispatch();
-    const unLocked = useSelector(state => state.constructor.unLocked);
-    const bun = useSelector(state => state.constructor.bun);
+  const [, drop] = useDrop({
+    accept: "ingredient",
+    drop(info) {
+      if (info.type === 'bun') {
+        dispatch({
+          type: ADD_BUN_INGREDIENT,
+          info: info
+        });
+        dispatch({
+          type: CHANGE_COUNT_BUN,
+          id: info._id
+        });
+      } else {
+        dispatch({
+          type: ADD_UNLOCKED_INGREDIENT,
+          info: info
+        });
+        dispatch({
+          type: INCREASE_COUNT,
+          id: info._id
+        });
+      };
+    },
+  });
+
+  const totalPrice = useMemo(() => {
+    let sum = 0;
+    if (unLocked.length) {
+      sum += unLocked.reduce((a, j) => a + (j.price || 0), 0)
+    } 
+    if (bun.price) {
+      sum += bun.price * 2
+    } 
+    return sum;
+  }, [ bun, unLocked]);
+
+  const handleOrderClick = () => {
+    if (!bun.price) {
+      alert('Выбери булку для своего бургера, не будь фитнес-занудой! :)');
+    } else {
+      const idsArray = unLocked.map(i => i._id);
+      idsArray.unshift(bun._id);
+      idsArray.push(bun._id);
+
+      dispatch(postOrder(
+          `${constants.URL}/orders`, 
+          { "ingredients": idsArray }
+      ));
+      handleOpenModal();
+      dispatch({ type: DELETE_ALL_INGREDIENTS });
+      dispatch({ type: REMOVE_COUNTS });
+    }
+  };
+
+  const handleOpenModal = () => {
+    setModalVisible({ visible: true });
+  }
+  const handleCloseModal = () => {
+      setModalVisible({ visible: false });
+  }
+
+  const modalOrder = (
+    <Modal onClose={handleCloseModal} > 
+      <OrderDetails />
+    </Modal>
+  );
+
+  const moveListItem = useCallback((dragIndex, hoverIndex) => {
+    const dragItem = unLocked[dragIndex]
+    const hoverItem = unLocked[hoverIndex]
+
+    const updatedUnLocked = [...unLocked];
+    updatedUnLocked[dragIndex] = hoverItem;
+    updatedUnLocked[hoverIndex] = dragItem;
     
- 
-    const [, drop] = useDrop({
-        accept: "ingredient",
-        drop(info) {
-            if (info.type === 'bun') {
-                dispatch({
-                    type: ADD_BUN_INGREDIENT,
-                    info: info
-                }); 
-            } else {
-                dispatch({
-                    type: ADD_UNLOCKED_INGREDIENT,
-                    info: info
-                });
-            }
-            dispatch({
-                type: INCREASE_COUNT,
-                id: info._id
-            });
-        },
+    dispatch({
+      type: UPDATE_UNLOCKED,
+      updatedUnLocked
     });
+  }, [unLocked, dispatch]);
 
-    const totalValue = useMemo(() => {
-        if (unLocked.length || bun.price) {
-            let sum = unLocked.reduce((a, j) => a + (j.price || 0), 0) 
-            sum += bun.price * 2
-            return sum
-        } else {
-            return 0
-        }
-    }, [
-            bun, 
-            unLocked,
-        ]
-    );
+  return (
+    <>
+      { modalVisible.visible ? modalOrder : null }
+      <div className={style.column}>
+          <div className='mt-25'></div>
 
-    const orderBody = useSelector((state) => state.order.orderBody)
+          <section ref={drop}>
+          { bun._id && (
+            <div className={style.item}>
+              <div className='ml-8 top'>
+                  <ConstructorElement
+                    type="top"
+                    isLocked={true}
+                    text={`${bun.name} (верх)`}
+                    price={bun.price}
+                    thumbnail={bun.image}
+                  >
+                  </ConstructorElement>
+              </div>
+            </div>   
+          )}
 
-    const handleOrderClick = () => {
-        let idsArray = unLocked.map(i => i._id);
-        idsArray.unshift(bun._id);
-        idsArray.push(bun._id);
-        dispatch({type: SET_ORDER, orderBody: { "ingredients": idsArray }});
-        dispatch(postOrder(`${constants.URL}/orders`, orderBody));
-        handleOpenModal();
-
-    }
-
-    const handleOpenModal = () => {
-        setModalVisible({ visible: true });
-    }
-    const handleCloseModal = () => {
-        setModalVisible({ visible: false });
-    }
-
-    const modalOrder = (
-        <Modal onClose={handleCloseModal} > 
-            <OrderDetails />
-        </Modal>
-    );
-
-    return (
-        <>
-            { modalVisible.visible ? modalOrder : null }
-            <div className={style.column}>
-                <div className='mt-25'></div>
-
-                <section ref={drop}>
-                { bun._id &&
-                (
-                    <div className={style.item}>
-                        <div className='ml-8 top'>
-                            <ConstructorElement
-                            type="top"
-                            isLocked={true}
-                            text={`${bun.name} (верх)`}
-                            price={bun.price}
-                            thumbnail={bun.image}
-                            >
-                            </ConstructorElement>
-                        </div>
-                    </div>   )}
-                            
-                    { unLocked.length ? (unLocked.map(i => (
-                        <ConstructorItem name={i.name} price={i.price} image={i.image} key={i._id} id={i._id}/>
-                    ))) : null }
-
-                { bun._id && 
-                (
-                    <div className={style.item}>
-                        <div className='ml-8 bottom'>
-                            <ConstructorElement
-                                type="bottom"
-                                isLocked={true}
-                                text={`${bun.name} (низ)`}
-                                price={bun.price}
-                                thumbnail={bun.image}
-                                >
-                            </ConstructorElement>
-                        </div>  
-                    </div>
-                )}
-
-                </section>
-
-                <div className='mt-10'></div>
-                <div className={style.total}>
-                    <div className={style.price}>
-                        <p className="text text_type_main-large mr-2">
-                            {totalValue}
-                        </p>
-                        <CurrencyIcon type="primary" />
-                    </div>
-                    <div className={style.button}>            
-                        <Button htmlType="button" type="primary" size="medium" onClick={handleOrderClick}>
-                            Оформить заказ
-                        </Button>
-                    </div>
-                </div>
+            { unLocked.length ? (unLocked.map((i, index) => (
+              <ConstructorItem 
+                name={i.name} 
+                price={i.price} 
+                image={i.image} 
+                key={i.uuid} 
+                uuid={i.uuid} 
+                _id={i._id} 
+                index={index}
+                moveListItem={moveListItem}
+              />
+            ))) : null }
+  
+          { bun._id && (
+            <div className={style.item}>
+              <div className='ml-8 bottom'>
+                  <ConstructorElement
+                    type="bottom"
+                    isLocked={true}
+                    text={`${bun.name} (низ)`}
+                    price={bun.price}
+                    thumbnail={bun.image}
+                  >
+                  </ConstructorElement>
+              </div>
             </div>
-        </>
-      )
-}
+          )}
+          </section>
+
+          <div className='mt-10'></div>
+          <div className={style.total}>
+            <div className={style.price}>
+                <p className="text text_type_main-large mr-2">
+                  { totalPrice }
+                </p>
+                <CurrencyIcon type="primary" />
+            </div>
+            <div className={style.button}>            
+              <Button 
+                htmlType="button" 
+                type="primary" 
+                size="medium" 
+                onClick={handleOrderClick}
+              >
+                Оформить заказ
+              </Button>
+            </div>
+          </div>
+      </div>
+    </>
+  )
+};
 
 export default BurgerConstructor;
-

@@ -1,4 +1,4 @@
-import { POST_ORDER_FAILED, POST_ORDER_REQUEST, POST_ORDER_SUCCESS, SET_ORDER } from '../actions/order';
+import { POST_ORDER_FAILED, POST_ORDER_REQUEST, POST_ORDER_SUCCESS } from '../actions/order';
 import { initialState } from '../initialState';
 
 export const orderReducer = (state = initialState.order, action) => {
@@ -6,14 +6,18 @@ export const orderReducer = (state = initialState.order, action) => {
     case POST_ORDER_REQUEST: {  
       return {
         ...state,
-        orderRequest: true
+        orderRequest: true,
+        currentNumber: null
       };
     }
     case POST_ORDER_SUCCESS: {
-      return { ...state, orderFailed: false, orderNumber: action.orderNumber, orderRequest: false };
-    }
-    case SET_ORDER: {
-      return { ...state, orderBody: action.orderBody };
+      return { 
+        ...state, 
+        orderFailed: false, 
+        orderRequest: false,
+        orders: [...state.orders, action.orderData], 
+        currentNumber: action.orderData.number
+      };
     }
     case POST_ORDER_FAILED: {
       return { ...state, orderFailed: true, orderRequest: false };

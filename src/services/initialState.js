@@ -1,6 +1,10 @@
 export const initialState = {
     ingredients: {
-        ingredientsList: [],
+        ingredientsList: {
+            buns: [],
+            mains: [],
+            sauces: []
+        },
         ingredientsRequest: false,
         ingredientsFailed: false,
     
@@ -12,9 +16,9 @@ export const initialState = {
     },
     ingredientDetails: {},
     order: {
-        orderBody: [],
+        orders: [],
         orderRequest: false,
         orderFailed: false,
-        orderNumber: null
+        currentNumber: null
     },
   };

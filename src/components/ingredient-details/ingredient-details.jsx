@@ -2,7 +2,8 @@ import style from './ingredient-details.module.css';
 import { useSelector } from 'react-redux';
 
 function IngredientDetails() {
-    const { calories, proteins, fat, carbohydrates, image_large, type, name } = useSelector(state => state.ingredientDetails);
+    const getIngredientDetails = (state) => state.ingredientDetails;
+    const { calories, proteins, fat, carbohydrates, image_large, type, name } = useSelector(getIngredientDetails);
     return(
         <div className={style.body}>
 

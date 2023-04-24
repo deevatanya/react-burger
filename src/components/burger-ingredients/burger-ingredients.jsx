@@ -1,4 +1,5 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCard from '../ingredient-card/ingredient-card';
 import style from './burger-ingredients.module.css';
@@ -8,17 +9,35 @@ import { getIngredients } from '../../services/actions/ingredients';
 
 function BurgerIngredients() {
     const [current, setCurrent] = useState('buns');
-    const ingredients = useSelector(state => state.ingredients.ingredientsList);
+
+    const getIngredientsList = (state) => state.ingredients.ingredientsList;
+    const { mains, buns, sauces } = useSelector(getIngredientsList);
 
     const dispatch = useDispatch();
     useEffect(() => {
-      if(!ingredients.length) dispatch(getIngredients(`${constants.URL}/ingredients`))
-    }, [dispatch, ingredients]);
+      dispatch(getIngredients(`${constants.URL}/ingredients`))
+    }, [dispatch]);
 
-    const mains = useMemo(() => ingredients.filter((obj) => obj.type === 'main'), [ingredients]);
-    const buns = useMemo(() => ingredients.filter((obj) => obj.type === 'bun'), [ingredients]);
-    const sauces = useMemo(() => ingredients.filter((obj) => obj.type === 'sauce'), [ingredients]);
     const scroll = (type) => document.getElementById(type).scrollIntoView({behavior: "smooth", block: "start"});
+    const [ refBuns, inViewBuns ] = useInView({
+      threshold: 0,
+    });
+    const [ refSauces, inViewSauces ] = useInView({
+      threshold: 0,
+    });
+    const [ refMains, inViewMains ] = useInView({
+      threshold: 0,
+    });
+
+    useEffect(() => {
+      if (inViewBuns) {
+        setCurrent('buns');
+      } else if (inViewSauces) {
+        setCurrent('sauces');
+      } else if (inViewMains) {
+        setCurrent('mains');
+      }
+    }, [inViewBuns, inViewSauces, inViewMains]);
 
     return (
         <div className={style.column}>
@@ -51,7 +70,7 @@ function BurgerIngredients() {
             </div>
 
             <section>
-                <div className='mt-5 mb-5' id='buns' >
+                <div className='mt-5 mb-5' id='buns' ref={refBuns}>
                     <p className="text text_type_main-medium" >
                         Булки
                     </p>
@@ -64,7 +83,7 @@ function BurgerIngredients() {
                         ))}
                     </div>
                 </div>
-                <div className='mt-5 mb-5' id='sauces' >
+                <div className='mt-5 mb-5' id='sauces' ref={refSauces}>
                     <p className="text text_type_main-medium">
                         Соусы
                     </p>
@@ -77,7 +96,7 @@ function BurgerIngredients() {
                         ))}
                     </div>
                 </div>           
-                <div className='mt-5 mb-5' id='mains' >
+                <div className='mt-5 mb-5' id='mains' ref={refMains}>
                     <p className="text text_type_main-medium">
                         Начинки
                     </p>
