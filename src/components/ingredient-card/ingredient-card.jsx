@@ -1,61 +1,78 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useDrag } from 'react-dnd';
 import PropTypes from 'prop-types';
-import Modal from '../modal/modal';
+import { v4 as uuidv4 } from 'uuid';
+
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import style from './ingredient-card.module.css';
+import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 
+import style from './ingredient-card.module.css';
+import { 
+    SET_INGREDIENT_DETAILS, 
+    REMOVE_INGREDIENT_DETAILS 
+} from '../../services/actions/ingredientDetails';
+
 function IngredientCard({ info }) {
-    const [modalVisible, setModalVisible] = React.useState({ visible: false });
-    const { image, price, name, type, calories, proteins, fat, carbohydrates, image_large } = info;
+  const [modalVisible, setModalVisible] = React.useState({ visible: false });
+  const { image, price, name, type, count } = info;
+  const dispatch = useDispatch();
 
-    const handleOpenModal = () => {
-        setModalVisible({ visible: true });
+  const handleOpenModal = () => {
+    setModalVisible({ visible: true });
+    dispatch({type: SET_INGREDIENT_DETAILS, info});
+  };
+  const handleCloseModal = () => {
+    setModalVisible({ visible: false });
+    dispatch({type: REMOVE_INGREDIENT_DETAILS, info});
+  };
+
+  const ingredientUUID = uuidv4();
+  const [, dragRef] = useDrag({
+    type: 'ingredient',
+    item: { 
+      ...info,
+      uuid: ingredientUUID
     }
-    const handleCloseModal = () => {
-        setModalVisible({ visible: false });
-    }
+  });
 
-    const modalHeader = 'Детали ингредиента';
-    const modalIngs = (
-        <Modal onClose={handleCloseModal} header={modalHeader}> 
-            <IngredientDetails 
-                calories ={calories} 
-                proteins={proteins} 
-                fat={fat} 
-                carbohydrates={carbohydrates}
-                image={image_large} 
-                type={type}
-                name={name}
-            />
-        </Modal>
-    );
+  const modalHeader = 'Детали ингредиента';
+  const modalIngs = (
+    <Modal onClose={handleCloseModal} header={modalHeader}> 
+      <IngredientDetails />
+    </Modal>
+  );
 
-    return (
-        <>
-            { modalVisible.visible ? modalIngs : null }
-            <div className={`${style.body} ml-3 mr-3 mt-4 mb-4`}  onClick={handleOpenModal}>
-                <div className={style.counter}>
-                    <Counter count={1} size="default" extraClass="m-1" />
-                </div>
+  return (
+    <>
+      { modalVisible.visible ? modalIngs : null }
+      <div className={`${style.body} ml-3 mr-3 mt-4 mb-4`} ref={dragRef} onClick={handleOpenModal}>
 
-                <img src={image} alt={type} />
+        { count ? (
+        <div className={style.counter}>
+          <Counter count={count} size="default" extraClass="m-1" />
+        </div>
+        ) : null }
 
-                <div className={`${style.price} mt-1 mb-1`}>
-                    <p className="text text_type_main-medium mr-2">
-                        {price}
-                    </p>
-                    <CurrencyIcon type="primary" />
-                </div>
-                
-                <div className={style.name}>
-                    <p className="text text_type_main-small">
-                        {name}
-                    </p>
-                </div>
-            </div>
-        </>
-    )
+        <img src={image} alt={type} />
+
+        <div className={`${style.price} mt-1 mb-1`}>
+          <p className="text text_type_main-medium mr-2">
+            {price}
+          </p>
+          <CurrencyIcon type="primary" />
+        </div>
+          
+        <div className={style.name}>
+          <p className="text text_type_main-small">
+            {name}
+          </p>
+        </div>
+
+      </div>
+    </>
+  )
 }
 
 export default IngredientCard;

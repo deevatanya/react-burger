@@ -1,7 +1,10 @@
 import style from './order-details.module.css';
-import PropTypes from 'prop-types';
+import { useSelector} from 'react-redux';
 
-function OrderDetails({orderNumber}) {
+function OrderDetails() {
+    const getOrderNumber = (state) => state.order.currentNumber;
+    const orderNumber = useSelector(getOrderNumber);
+
     return (
         <div className={style.body}>
             <div className='mt-4'></div>
@@ -47,7 +50,3 @@ function OrderDetails({orderNumber}) {
 }
 
 export default OrderDetails;
-
-OrderDetails.propTypes = {
-    orderNumber: PropTypes.number.isRequired,
-};
