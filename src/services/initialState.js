@@ -21,4 +21,13 @@ export const initialState = {
         orderFailed: false,
         currentNumber: null
     },
+    user: {
+        isAuth: false,
+        isResetPassword: false,
+        authRequest: false,
+        authFailed: false,
+        accessToken: '',
+        refreshToken: '',
+        data: {},
+    }
   };

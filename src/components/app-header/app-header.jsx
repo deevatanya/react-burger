@@ -1,4 +1,4 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './app-header.module.css';
 
@@ -9,24 +9,24 @@ function AppHeader() {
             <Logo />
         </div>
         <nav className={style.menu}>
-            <a href='https://react.dev/' className={style.item}>
+            <Link to={{pathname: '/'}} className={style.item}>
                 <BurgerIcon type="primary" />
                 <p className="text text_type_main-default">
                     Конструктор
                 </p>
-            </a>
-            <a href='https://react.dev' className={style.item}>
+            </Link>
+            <Link to={{pathname: '/'}} className={style.item}>
                 <ListIcon type="secondary" />
                 <p className="text text_type_main-default text_color_inactive">
                     Лента заказов
                 </p>
-            </a>
-            <a href='https://react.dev/' className={style.item}>
+            </Link>
+            <Link to={{pathname: '/profile'}} className={style.item}>
                 <ProfileIcon type="secondary" />
                 <p className="text text_type_main-default text_color_inactive">
                     Личный кабинет
                 </p>
-            </a>
+            </Link>
         </nav>
     </header>
     )

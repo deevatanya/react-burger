@@ -1,4 +1,4 @@
-import { getData } from '../../utils/utils';
+import { getData } from '../../utils/requests';
 
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
