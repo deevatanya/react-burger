@@ -62,18 +62,26 @@ export const postAuth = async (URL, form) => {
   }
 }; 
 
-export const getAuth = async (URL) =>
-  await fetch(URL, {
+export const getAuth = async (URL) => {
+try {
+  const res = await fetch(URL, {
     method: 'GET',
     mode: 'cors',
     cache: 'no-cache',
     credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + getCookie('token')
+      Authorization: getCookie('accessToken')
     },
     redirect: 'follow',
     referrerPolicy: 'no-referrer'
-}); 
-
-export const logout = async (URL) => {};
+  });
+    if (res.ok) {
+      return await res.json();
+    } else {
+      return await res.json()
+        .then((err) => Promise.reject(err))
+    }
+  } catch (e){
+  }
+};

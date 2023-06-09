@@ -1,22 +1,20 @@
-import { POST_AUTH_FAILED, POST_AUTH_REQUEST, POST_AUTH_SUCCESS, POST_RESET_PASS_SUCCESS} from '../actions/user';
+import { AUTH_FAILED, AUTH_REQUEST, AUTH_SUCCESS, POST_RESET_PASS_SUCCESS} from '../actions/user';
 import { initialState } from '../initialState';
 
 export const userReducer = (state = initialState.user, action) => {
     switch(action.type) {
-        case POST_AUTH_REQUEST: {  
+        case AUTH_REQUEST: {  
             return {
               ...state,
               authRequest: true
             };
           }
-          case POST_AUTH_SUCCESS: {
+          case AUTH_SUCCESS: {
             return { 
               ...state, 
               authFailed: false, 
               authRequest: false,
-              isAuth: true,
-              refreshToken: action.refreshToken,
-              accessToken: action.accessToken,
+              isAuth: action.isAuth,
               data: {
                 ...action.info,
               }
@@ -31,7 +29,7 @@ export const userReducer = (state = initialState.user, action) => {
               isAuth: false
             }
           }
-          case POST_AUTH_FAILED: {
+          case AUTH_FAILED: {
             return { ...state, authFailed: true, authRequest: false, isAuth: false };
           }
         default: {

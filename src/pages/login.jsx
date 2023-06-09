@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import styles from './form.module.css';
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { postAuthLogin } from '../services/actions/user';
+import { postAuthLogin, getUser } from '../services/actions/user';
 import { constants } from '../constants';
 
 export function LoginPage() {
@@ -17,13 +17,18 @@ export function LoginPage() {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  const onClick = (e) => {
+  let onSubmit = useCallback((e) => {
       e.preventDefault();
       dispatch(postAuthLogin(
         `${constants.URL}/auth/login`, 
         form
     ));
-  };
+  }, [form, dispatch]
+  );
+
+  useEffect(() => {
+    dispatch(getUser(`${constants.URL}/auth/user`))
+  }, [dispatch]);
 
   if (isAuth) {
     return (
@@ -35,7 +40,7 @@ export function LoginPage() {
 
   return (
     <div className={styles.wrapper}>
-      <form>
+      <form onSubmit={onSubmit}> 
         <p className="text text_type_main-medium">
           Вход
         </p>
@@ -57,7 +62,7 @@ export function LoginPage() {
           />
         </div>
         <div className="mt-6"></div>
-        <Button htmlType="button" type="primary" size="medium" onClick={onClick}>
+        <Button htmlType="submit" type="primary" size="medium">
           Вход
         </Button>
       </form>

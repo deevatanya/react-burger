@@ -1,23 +1,27 @@
-import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './profile.module.css';
 import { EmailInput, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { postAuthLogin } from '../services/actions/user';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { constants } from '../constants';
+import { postAuthLogout } from '../services/actions/user';
 
 const { PATH } = constants;
 export function ProfilePage() {
   const {
     name,
-    email,
-    password
+    email
   } = useSelector(store => store.user.data);
 
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const onChange = e => {
     dispatch(postAuthLogin(e.target.name, e.target.value));
+  };
+
+  const onLogout = () => {
+    dispatch(postAuthLogout(`${constants.URL}/auth/logout`));
+    navigate(constants.PATH.LOGIN, {replace: true});
   };
 
   return (
@@ -34,7 +38,7 @@ export function ProfilePage() {
               История заказов
             </p>
           </Link>
-          <Link to={{ pathname: PATH.LOGIN }} className={styles.link}>
+          <Link className={styles.link} onClick={onLogout}>
             <p className="text text_type_main-medium text_color_inactive">
               Выход
             </p>
@@ -67,7 +71,7 @@ export function ProfilePage() {
             <div className="mt-6"></div>
             <PasswordInput
               onChange={onChange}
-              value={password}
+              value={'******'}
               name={'password'}
               placeholder={'Пароль'}
               icon={'EditIcon'}

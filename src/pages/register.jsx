@@ -17,7 +17,7 @@ export function RegisterPage() {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  const onClick = (e) => {
+  const onSubmit = (e) => {
       e.preventDefault();
       dispatch(postAuthLogin(
         `${constants.URL}/auth/register`, 
@@ -35,7 +35,7 @@ export function RegisterPage() {
 
   return (
     <div className={styles.wrapper}>
-      <form>
+      <form onSubmit={onSubmit}>
         <p className="text text_type_main-medium">
           Регистрация
         </p>
@@ -64,7 +64,7 @@ export function RegisterPage() {
           />
         </div>
         <div className="mt-6"></div>
-        <Button htmlType="button" type="primary" size="medium" onClick={onClick}>
+        <Button htmlType="submit" type="primary" size="medium">
           Регистрация
         </Button>
       </form>

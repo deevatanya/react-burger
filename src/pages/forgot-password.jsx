@@ -1,20 +1,23 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Navigate } from 'react-router-dom';
 import styles from './form.module.css';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { postForgotPassword } from '../services/actions/user';
+import { postForgotPassword, getUser } from '../services/actions/user';
 import { constants } from '../constants';
 
 export function ForgotPassword() {
   const [form, setValue] = React.useState({ email: '' });
   const dispatch = useDispatch();
 
+  const getAuthStatus = (state) => state.user.isAuth;
+  const isAuth = useSelector(getAuthStatus);
+
   const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value} );
   };
 
-  const onClick = (e) => {
+  const onSubmit = (e) => {
       e.preventDefault();
       dispatch(postForgotPassword(
         `${constants.URL}/password-reset`, 
@@ -22,18 +25,21 @@ export function ForgotPassword() {
     ));
   };
 
-  // пока без переадресации
-  // if (isResetPass) {
-  //   return (
-  //     <Navigate
-  //       to={'/reset-password'}
-  //     />
-  //   );
-  // }
+  React.useEffect(() => {
+    dispatch(getUser(`${constants.URL}/auth/user`))
+  }, [dispatch]);
+  
+  if (isAuth) {
+    return (
+      <Navigate
+        to={constants.PATH.HOME}
+      />
+    );
+  }
 
   return (
     <div className={styles.wrapper}>
-      <form>
+      <form onSubmit={onSubmit}>
         <p className="text text_type_main-medium">
           Восстановление пароля
         </p>
@@ -48,7 +54,7 @@ export function ForgotPassword() {
           />
         </div>
         <div className="mt-6"></div>
-        <Button htmlType="button" type="primary" size="medium" onClick={onClick}>
+        <Button htmlType="submit" type="primary" size="medium">
           Восстановить
         </Button>
       </form>

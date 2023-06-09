@@ -19,7 +19,7 @@ function App() {
     <Router>
       <AppHeader />
       <Routes>
-        <Route path={PATH.HOME} element={<ProtectedRouteElement element={<HomePage />} />} />
+        <Route path={PATH.HOME} element={<HomePage />} />
         <Route path={PATH.PROFILE} element={<ProtectedRouteElement element={<ProfilePage />} />} />
 
         <Route path={PATH.LOGIN} element={<LoginPage />} />

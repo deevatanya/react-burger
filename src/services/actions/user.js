@@ -1,28 +1,74 @@
 
-import { postAuth } from '../../utils/requests';
+import { postAuth, getAuth } from '../../utils/requests';
+import { deleteCookie, setCookie, getCookie } from "../../utils/cookie";
 
-export const POST_AUTH_REQUEST = 'POST_AUTH_REQUEST';
-export const POST_AUTH_SUCCESS = 'POST_AUTH_SUCCESS';
-export const POST_AUTH_FAILED = 'POST_AUTH_FAILED';
+export const AUTH_REQUEST = 'AUTH_REQUEST';
+export const AUTH_SUCCESS = 'AUTH_SUCCESS';
+export const AUTH_FAILED = 'AUTH_FAILED';
 
 export const POST_RESET_PASS_SUCCESS = 'POST_RESET_PASS_SUCCESS';
 
-export function postAuthLogin(URL, form) {
+export function getUser(URL) {
   return function(dispatch) {
     dispatch({
-      type: POST_AUTH_REQUEST
+      type: AUTH_REQUEST
     });
-    postAuth(URL, form).then(res => {
+    getAuth(URL).then(res => {
       if (res && res.success) {
         dispatch({
-          type: POST_AUTH_SUCCESS,
+          type: AUTH_SUCCESS,
+          isAuth: true,
           info: res.user,
-          accessToken: res.accessToken,
-          refreshToken: res.refreshToken
         });
       } else {
         dispatch({
-          type: POST_AUTH_FAILED
+          type: AUTH_FAILED
+        });
+      }
+    });
+  };
+};
+export function postAuthLogin(URL, form) {
+  return function(dispatch) {
+    dispatch({
+      type: AUTH_REQUEST
+    });
+    postAuth(URL, form).then(res => {
+      if (res && res.success) {
+        setCookie('token', res.refreshToken);
+        setCookie('accessToken', res.accessToken);
+        dispatch({
+          type: AUTH_SUCCESS,
+          isAuth: true,
+          info: res.user,
+        });
+      } else {
+        dispatch({
+          type: AUTH_FAILED
+        });
+      }
+    });
+  };
+};
+
+export function postAuthLogout(URL) {
+  return function(dispatch) {
+    dispatch({
+      type: AUTH_REQUEST
+    });
+    const token = getCookie('token');
+    postAuth(URL, { token: token }).then(res => {
+      if (res && res.success) {
+        dispatch({
+          type: AUTH_SUCCESS,
+          isAuth: false,
+          info: {},
+        });
+        deleteCookie('token');
+        deleteCookie('accessToken');
+      } else {
+        dispatch({
+          type: AUTH_FAILED
         });
       }
     });
@@ -32,7 +78,7 @@ export function postAuthLogin(URL, form) {
 export function postForgotPassword(URL, form) {
   return function(dispatch) {
     dispatch({
-      type: POST_AUTH_REQUEST
+      type: AUTH_REQUEST
     });
     postAuth(URL, form).then(res => {
       if (res && res.success) {
@@ -41,7 +87,7 @@ export function postForgotPassword(URL, form) {
         });
       } else {
         dispatch({
-          type: POST_AUTH_FAILED
+          type: AUTH_FAILED
         });
       }
     });

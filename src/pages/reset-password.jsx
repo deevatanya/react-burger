@@ -1,33 +1,55 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Navigate } from 'react-router-dom';
 import styles from './form.module.css';
 import { Button, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { postForgotPassword } from '../services/actions/user';
+import { postForgotPassword, getUser } from '../services/actions/user';
 import { constants } from '../constants';
 
 export function ResetPassword() {
   const [form, setValue] = React.useState({ password: '', token: '' });
   const dispatch = useDispatch();
+  const getAuthStatus = (state) => state.user.isAuth;
+  const isAuth = useSelector(getAuthStatus);
+
+  const getResetPass = (state) => state.user.isResetPassword;
+  const isResetPass = useSelector(getResetPass);
 
   const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value} );
     console.log(e.target.value);
   };
 
-  const onClick = (e) => {
+  const onSubmit = (e) => {
       e.preventDefault();
       dispatch(postForgotPassword(
         `${constants.URL}/password-reset/reset`, 
         form
     ));
   };
+  React.useEffect(() => {
+    dispatch(getUser(`${constants.URL}/auth/user`))
+  }, [dispatch]);
+  
+  if (isAuth) {
+    return (
+      <Navigate
+        to={constants.PATH.HOME}
+      />
+    );
+  }
 
-  // уведомление бы об успехе
+  if (!isResetPass) {
+    return (
+      <Navigate
+        to={constants.PATH.FORGOT_PASSWORD}
+      />
+    );
+  }
 
   return (
     <div className={styles.wrapper} >
-      <form>
+      <form onSubmit={onSubmit}>
         <p className="text text_type_main-medium">
           Восстановление пароля
         </p>
@@ -50,7 +72,7 @@ export function ResetPassword() {
           />
         </div>
         <div className="mt-6"></div>
-        <Button htmlType="button" type="primary" size="medium" onClick={onClick}>
+        <Button htmlType="submit" type="primary" size="medium">
           Сохранить
         </Button>
       </form>

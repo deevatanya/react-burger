@@ -26,8 +26,6 @@ export const initialState = {
         isResetPassword: false,
         authRequest: false,
         authFailed: false,
-        accessToken: '',
-        refreshToken: '',
         data: {},
     }
   };
