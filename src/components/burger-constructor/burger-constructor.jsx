@@ -128,7 +128,7 @@ function BurgerConstructor() {
   if (!orderAuth) {
     return (
       <Navigate
-        to={'/login'}
+        to={constants.PATH.LOGIN}
       />
     );
   };

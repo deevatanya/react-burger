@@ -57,7 +57,7 @@ export function ResetPassword() {
       <div className="mt-20"></div>
         <p className="text text_type_main-default text_color_inactive">
           Вспомнили пароль?
-          <Link to={{ pathname: '/login' }} className={`${styles.link} ml-2`}>
+          <Link to={{ pathname: constants.PATH.LOGIN }} className={`${styles.link} ml-2`}>
             Войти
           </Link>
         </p>

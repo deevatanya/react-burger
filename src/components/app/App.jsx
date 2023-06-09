@@ -10,19 +10,22 @@ import {
 } from '../../pages';
 import AppHeader from '../app-header/app-header';
 import { ProtectedRouteElement } from '../protected-route';
+import { constants } from '../../constants';
+
+const { PATH } = constants;
 
 function App() {
   return (
     <Router>
       <AppHeader />
       <Routes>
-        <Route path='/' element={<ProtectedRouteElement element={<HomePage />} />} />
-        <Route path='/profile' element={<ProtectedRouteElement element={<ProfilePage />} />} />
+        <Route path={PATH.HOME} element={<ProtectedRouteElement element={<HomePage />} />} />
+        <Route path={PATH.PROFILE} element={<ProtectedRouteElement element={<ProfilePage />} />} />
 
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/register' element={<RegisterPage />} />
-        <Route path='/forgot-password' element={<ForgotPassword />} />
-        <Route path='/reset-password' element={<ResetPassword />} />
+        <Route path={PATH.LOGIN} element={<LoginPage />} />
+        <Route path={PATH.REGISTER} element={<RegisterPage />} />
+        <Route path={PATH.FORGOT_PASSWORD} element={<ForgotPassword />} />
+        <Route path={PATH.RESET_PASSWORD} element={<ResetPassword />} />
         <Route path='*' element={<NotFound404 />} />
       </Routes>
     </Router>

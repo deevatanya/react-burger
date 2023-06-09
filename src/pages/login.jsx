@@ -28,7 +28,7 @@ export function LoginPage() {
   if (isAuth) {
     return (
       <Navigate
-        to={'/'}
+        to={constants.PATH.HOME}
       />
     );
   }
@@ -64,14 +64,14 @@ export function LoginPage() {
       <div className="mt-20"></div>
         <p className="text text_type_main-default text_color_inactive">
           Вы — новый пользователь?
-          <Link to={{ pathname: '/register' }} className={`${styles.link} ml-2`}>
+          <Link to={{ pathname: constants.PATH.REGISTER }} className={`${styles.link} ml-2`}>
             Зарегистрироваться
           </Link>
         </p>
       <div className="mt-4"></div>
         <p className="text text_type_main-default text_color_inactive">
           Забыли пароль?
-          <Link to={{ pathname: '/forgot-password' }} className={`${styles.link} ml-2`}>
+          <Link to={{ pathname: constants.PATH.FORGOT_PASSWORD }} className={`${styles.link} ml-2`}>
             Восстановить пароль
           </Link>
         </p>

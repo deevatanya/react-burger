@@ -4,7 +4,9 @@ import styles from './profile.module.css';
 import { EmailInput, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { postAuthLogin } from '../services/actions/user';
 import { Link } from 'react-router-dom';
+import { constants } from '../constants';
 
+const { PATH } = constants;
 export function ProfilePage() {
   const {
     name,
@@ -22,17 +24,17 @@ export function ProfilePage() {
     <>
       <div className={styles.tab}>
         <div className={styles.tabs}>
-          <Link to={{ pathname: '/profile'}} className={styles.link}>
+          <Link to={{ pathname: PATH.PROFILE }} className={styles.link}>
             <p className="text text_type_main-medium">
               Профиль
             </p>
           </Link>
-          <Link to={{ pathname: '/profile/orders'}} className={styles.link}>
+          <Link to={{ pathname: PATH.ORDERS }} className={styles.link}>
             <p className="text text_type_main-medium text_color_inactive">
               История заказов
             </p>
           </Link>
-          <Link to={{ pathname: ''}} className={styles.link}>
+          <Link to={{ pathname: PATH.LOGIN }} className={styles.link}>
             <p className="text text_type_main-medium text_color_inactive">
               Выход
             </p>

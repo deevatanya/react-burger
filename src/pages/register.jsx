@@ -28,7 +28,7 @@ export function RegisterPage() {
   if (isAuth) {
     return (
       <Navigate
-        to={'/'}
+        to={constants.PATH.HOME}
       />
     );
   }
@@ -71,7 +71,7 @@ export function RegisterPage() {
       <div className="mt-20"></div>
         <p className="text text_type_main-default text_color_inactive">
           Уже зарегистрированы?
-          <Link to={{ pathname: '/login' }} className={`${styles.link} ml-2`}>
+          <Link to={{ pathname: constants.PATH.LOGIN }} className={`${styles.link} ml-2`}>
             Войти
           </Link>
         </p>
