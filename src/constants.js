@@ -3,7 +3,7 @@ export const constants = {
     PATH: {
         HOME: '/',
         PROFILE: '/profile',
-        ORDERS: '/profile/orders',
+        ORDERS: '/orders',
         LOGIN: '/login',
         REGISTER: '/register',
         FORGOT_PASSWORD: '/forgot-password',

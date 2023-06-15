@@ -86,7 +86,7 @@ function BurgerConstructor() {
         idsArray.push(bun._id);
   
         dispatch(postOrder(
-            `${constants.URL}/orders`, 
+            `${constants.URL}${constants.PATH.ORDERS}`, 
             { "ingredients": idsArray }
         ));
         handleOpenModal();

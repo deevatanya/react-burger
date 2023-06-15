@@ -13,11 +13,14 @@ import {
     SET_INGREDIENT_DETAILS, 
     REMOVE_INGREDIENT_DETAILS 
 } from '../../services/actions/ingredientDetails';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 function IngredientCard({ info }) {
   const [modalVisible, setModalVisible] = React.useState({ visible: false });
-  const { image, price, name, type, count } = info;
+  const { image, price, name, type, count, _id } = info;
   const dispatch = useDispatch();
+  let location = useLocation();
+  const navigate = useNavigate();
 
   const handleOpenModal = () => {
     setModalVisible({ visible: true });
@@ -26,6 +29,7 @@ function IngredientCard({ info }) {
   const handleCloseModal = () => {
     setModalVisible({ visible: false });
     dispatch({type: REMOVE_INGREDIENT_DETAILS, info});
+    navigate('/');
   };
 
   const ingredientUUID = uuidv4();
@@ -47,30 +51,35 @@ function IngredientCard({ info }) {
   return (
     <>
       { modalVisible.visible ? modalIngs : null }
-      <div className={`${style.body} ml-3 mr-3 mt-4 mb-4`} ref={dragRef} onClick={handleOpenModal}>
+      <Link
+        key={_id}
+        to={`/ingredients/${_id}`}
+        state={{ background: location }}
+        className={`${style.body} ml-3 mr-3 mt-4 mb-4`} ref={dragRef} onClick={handleOpenModal}
+        style={{textDecoration: 'none', color: 'white'}}>
 
-        { count ? (
-        <div className={style.counter}>
-          <Counter count={count} size="default" extraClass="m-1" />
-        </div>
-        ) : null }
+          { count ? (
+          <div className={style.counter}>
+            <Counter count={count} size="default" extraClass="m-1" />
+          </div>
+          ) : null }
 
-        <img src={image} alt={type} />
+          <img src={image} alt={type} />
 
-        <div className={`${style.price} mt-1 mb-1`}>
-          <p className="text text_type_main-medium mr-2">
-            {price}
-          </p>
-          <CurrencyIcon type="primary" />
-        </div>
-          
-        <div className={style.name}>
-          <p className="text text_type_main-small">
-            {name}
-          </p>
-        </div>
+          <div className={`${style.price} mt-1 mb-1`}>
+            <p className="text text_type_main-medium mr-2">
+              {price}
+            </p>
+            <CurrencyIcon type="primary" />
+          </div>
+            
+          <div className={style.name}>
+            <p className="text text_type_main-small">
+              {name}
+            </p>
+          </div>
 
-      </div>
+      </Link>
     </>
   )
 }

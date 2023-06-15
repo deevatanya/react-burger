@@ -33,7 +33,7 @@ export function ProfilePage() {
               Профиль
             </p>
           </Link>
-          <Link to={{ pathname: PATH.ORDERS }} className={styles.link}>
+          <Link to={{ pathname: `${PATH.PROFILE}${PATH.ORDERS}` }} className={styles.link}>
             <p className="text text_type_main-medium text_color_inactive">
               История заказов
             </p>

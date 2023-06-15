@@ -17,7 +17,6 @@ export function ResetPassword() {
 
   const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value} );
-    console.log(e.target.value);
   };
 
   const onSubmit = (e) => {
