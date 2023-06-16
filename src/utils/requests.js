@@ -1,4 +1,5 @@
-import { getCookie } from "./cookie";
+import { getCookie, setCookie } from "./cookie";
+import { constants } from '../constants';
 
 export async function getData(URL) {
   try {
@@ -62,9 +63,11 @@ export const postAuth = async (URL, form) => {
   }
 }; 
 
+const checkReponse = (res) => {
+  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+};
 export const getAuth = async (URL) => {
-try {
-  const res = await fetch(URL, {
+  const options = {
     method: 'GET',
     mode: 'cors',
     cache: 'no-cache',
@@ -75,40 +78,59 @@ try {
     },
     redirect: 'follow',
     referrerPolicy: 'no-referrer'
-  });
-    if (res.ok) {
-      return await res.json();
+  };
+try {
+  const res = await fetch(URL, options);
+  return await checkReponse(res);
+  } catch (err) {
+    if (err.message === "jwt expired") {
+      const token = getCookie('token');
+
+      const refresh = await postAuth(`${constants.URL}/auth/token`, { token: token });
+
+      setCookie('token', refresh.refreshToken);
+      setCookie('accessToken', refresh.accessToken);
+      options.headers.Authorization = refresh.accessToken;
+
+      const res2 = await fetch(URL, options);
+      return await checkReponse (res2);
     } else {
-      return await res.json()
-        .then((err) => Promise.reject(err))
+      return Promise.reject(err);
     }
-  } catch (e){
   }
 };
 
 export const patchUserAuth = async (URL, form) => {
-  try {
-    const res = await fetch(URL, {
-      method: 'PATCH',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: getCookie('accessToken')
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      body: JSON.stringify(form)
-    });
-      if (res.ok) {
-        return await res.json();
-      } else {
-        return await res.json()
-          .then((err) => Promise.reject(err))
-      }
-    } catch (e){
-      alert(`ooops, error: ${e.message}`);
-      console.error(e);
-    }
+  const options = {
+    method: 'PATCH',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: getCookie('accessToken')
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(form)
   };
+  try {
+    const res = await fetch(URL, options);
+    return await checkReponse(res);
+    } catch (err) {
+      if (err.message === "jwt expired") {
+        const token = getCookie('token');
+  
+        const refresh = await postAuth(`${constants.URL}/auth/token`, { token: token });
+  
+        setCookie('token', refresh.refreshToken);
+        setCookie('accessToken', refresh.accessToken);
+        options.headers.Authorization = refresh.accessToken;
+  
+        const res2 = await fetch(URL, options);
+        return await checkReponse (res2);
+      } else {
+        return Promise.reject(err);
+      }
+    }
+};
