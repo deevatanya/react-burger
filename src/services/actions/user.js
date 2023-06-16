@@ -1,5 +1,5 @@
 
-import { postAuth, getAuth } from '../../utils/requests';
+import { postAuth, getAuth, patchUserAuth } from '../../utils/requests';
 import { deleteCookie, setCookie, getCookie } from "../../utils/cookie";
 
 export const AUTH_REQUEST = 'AUTH_REQUEST';
@@ -14,6 +14,27 @@ export function getUser(URL) {
       type: AUTH_REQUEST
     });
     getAuth(URL).then(res => {
+      if (res && res.success) {
+        dispatch({
+          type: AUTH_SUCCESS,
+          isAuth: true,
+          info: res.user,
+        });
+      } else {
+        dispatch({
+          type: AUTH_FAILED
+        });
+      }
+    });
+  };
+};
+
+export function patchUser(URL, form) {
+  return function(dispatch) {
+    dispatch({
+      type: AUTH_REQUEST
+    });
+    patchUserAuth(URL, form).then(res => {
       if (res && res.success) {
         dispatch({
           type: AUTH_SUCCESS,

@@ -85,3 +85,30 @@ try {
   } catch (e){
   }
 };
+
+export const patchUserAuth = async (URL, form) => {
+  try {
+    const res = await fetch(URL, {
+      method: 'PATCH',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: getCookie('accessToken')
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(form)
+    });
+      if (res.ok) {
+        return await res.json();
+      } else {
+        return await res.json()
+          .then((err) => Promise.reject(err))
+      }
+    } catch (e){
+      alert(`ooops, error: ${e.message}`);
+      console.error(e);
+    }
+  };

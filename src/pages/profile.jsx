@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './profile.module.css';
-import { EmailInput, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { postAuthLogin } from '../services/actions/user';
+import { EmailInput, PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { patchUser } from '../services/actions/user';
 import { Link, useNavigate } from 'react-router-dom';
 import { constants } from '../constants';
 import { postAuthLogout } from '../services/actions/user';
@@ -12,17 +13,50 @@ export function ProfilePage() {
     name,
     email
   } = useSelector(store => store.user.data);
-
+  const [form, setValue] = useState({ email: email, password: '******', name: name });
+  const [disabled, setDisabled] = useState({ emailDisable: true, passwordDisable: true, nameDisable: true });
+  const [buttonsVisible, setButtonsVisible] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onChange = e => {
-    dispatch(postAuthLogin(e.target.name, e.target.value));
+    setValue({ ...form, [e.target.name]: e.target.value });
   };
 
   const onLogout = () => {
     dispatch(postAuthLogout(`${constants.URL}/auth/logout`));
     navigate(constants.PATH.LOGIN, {replace: true});
   };
+  const onNameClick = (e) => {
+    setDisabled({...disabled, nameDisable: false});
+    setButtonsVisible(true);
+  }
+
+  const onPasswordClick = (e) => {
+    setDisabled({...disabled, passwordDisable: false});
+    setButtonsVisible(true);
+  }
+
+  const onEmailClick = (e) => {
+    setDisabled({...disabled, emailDisable: false});
+    setButtonsVisible(true);
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    dispatch(patchUser(`${constants.URL}/auth/user`, form));
+    for (let i in disabled) {
+      disabled[i] = true;
+    }
+    setButtonsVisible(false);
+  }
+
+  const onReset = (e) => {
+    setValue({ email: email, password: '******', name: name });
+    for (let i in disabled) {
+      disabled[i] = true;
+    }
+    setButtonsVisible(false);
+  }
 
   return (
     <>
@@ -50,33 +84,51 @@ export function ProfilePage() {
         </p>
       </div>
       <div className={styles.content}>
-        <form>
+        <form onSubmit={onSubmit} onReset={onReset}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Input
               type={'text'}
               placeholder={'Имя'}
               onChange={onChange}
-              value={name}
+              value={form.name}
               name={'name'}
               icon={'EditIcon'}
+              onIconClick={onNameClick}
+              disabled={disabled.nameDisable}
             />
             <div className="mt-6"></div>
             <EmailInput
               onChange={onChange}
-              value={email}
+              value={form.email}
               name={'email'}
               placeholder={'Логин'}
               icon={'EditIcon'}
+              onIconClick={onEmailClick}
+              disabled={disabled.emailDisable}
             />
             <div className="mt-6"></div>
             <PasswordInput
               onChange={onChange}
-              value={'******'}
+              value={form.password}
               name={'password'}
               placeholder={'Пароль'}
               icon={'EditIcon'}
+              onIconClick={onPasswordClick}
+              disabled={disabled.passwordDisable}
             />
           </div>
+          <div className="mt-6"></div>
+          { buttonsVisible ? (
+          <div>
+            <Button type={'secondary'} htmlType={'reset'}>
+              Отмена
+            </Button>
+            <Button type={'primary'} htmlType={'submit'}>
+              Сохранить
+            </Button>
+          </div>
+        ) : null}
+
         </form>
       </div>
     </>
