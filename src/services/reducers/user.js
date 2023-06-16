@@ -21,12 +21,12 @@ export const userReducer = (state = initialState.user, action) => {
             };
           }
           case POST_RESET_PASS_SUCCESS: {
-            // пока ничего не делаем
             return {
               ...state,
               authFailed: false, 
               authRequest: false,
-              isAuth: false
+              isAuth: false,
+              isResetPassword: true
             }
           }
           case AUTH_FAILED: {

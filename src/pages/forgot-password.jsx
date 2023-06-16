@@ -12,6 +12,8 @@ export function ForgotPassword() {
 
   const getAuthStatus = (state) => state.user.isAuth;
   const isAuth = useSelector(getAuthStatus);
+  const getResetPass = (state) => state.user.isResetPassword;
+  const isResetPass = useSelector(getResetPass);
 
   const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value} );
@@ -33,6 +35,14 @@ export function ForgotPassword() {
     return (
       <Navigate
         to={constants.PATH.HOME}
+      />
+    );
+  }
+
+  if (isResetPass) {
+    return (
+      <Navigate
+        to={constants.PATH.RESET_PASSWORD}
       />
     );
   }
