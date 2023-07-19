@@ -87,7 +87,7 @@ function BurgerConstructor() {
   
         dispatch(postOrder(
             `${constants.URL}${constants.PATH.ORDERS}`, 
-            { "ingredients": idsArray }
+            { ingredients: idsArray }
         ));
         handleOpenModal();
         dispatch({ type: DELETE_ALL_INGREDIENTS });

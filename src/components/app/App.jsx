@@ -18,7 +18,6 @@ const { PATH } = constants;
 function App() {
   let location = useLocation();
   const background = location.state?.background;
-  console.log(location)
   return (
     <>
       <AppHeader />

@@ -2,14 +2,13 @@
 import { postAuth, getAuth, patchUserAuth } from '../../utils/requests';
 import { deleteCookie, setCookie, getCookie } from "../../utils/cookie";
 
-export const AUTH_REQUEST = 'AUTH_REQUEST';
-export const AUTH_SUCCESS = 'AUTH_SUCCESS';
-export const AUTH_FAILED = 'AUTH_FAILED';
+export const AUTH_REQUEST: string = 'AUTH_REQUEST';
+export const AUTH_SUCCESS: string = 'AUTH_SUCCESS';
+export const AUTH_FAILED: string = 'AUTH_FAILED';
+export const POST_RESET_PASS_SUCCESS: string = 'POST_RESET_PASS_SUCCESS';
 
-export const POST_RESET_PASS_SUCCESS = 'POST_RESET_PASS_SUCCESS';
-
-export function getUser(URL) {
-  return function(dispatch) {
+export function getUser(URL: string) {
+  return function(dispatch: any) {
     dispatch({
       type: AUTH_REQUEST
     });
@@ -29,8 +28,8 @@ export function getUser(URL) {
   };
 };
 
-export function patchUser(URL, form) {
-  return function(dispatch) {
+export function patchUser(URL: string, form: { email: string, password: string, name: string }) {
+  return function(dispatch: any) {
     dispatch({
       type: AUTH_REQUEST
     });
@@ -49,8 +48,8 @@ export function patchUser(URL, form) {
     });
   };
 };
-export function postAuthLogin(URL, form) {
-  return function(dispatch) {
+export function postAuthLogin(URL: string, form: { email: string, password: string, name: string }) {
+  return function(dispatch: any) {
     dispatch({
       type: AUTH_REQUEST
     });
@@ -72,8 +71,8 @@ export function postAuthLogin(URL, form) {
   };
 };
 
-export function postAuthLogout(URL) {
-  return function(dispatch) {
+export function postAuthLogout(URL: string) {
+  return function(dispatch: any) {
     dispatch({
       type: AUTH_REQUEST
     });
@@ -96,8 +95,8 @@ export function postAuthLogout(URL) {
   };
 };
 
-export function postForgotPassword(URL, form) {
-  return function(dispatch) {
+export function postForgotPassword(URL: string, form: { password: string, token: string }) {
+  return function(dispatch: any) {
     dispatch({
       type: AUTH_REQUEST
     });
