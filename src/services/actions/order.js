@@ -1,4 +1,4 @@
-import { postData } from '../../utils/utils';
+import { postData } from '../../utils/requests';
 
 export const POST_ORDER_REQUEST = 'POST_ORDER_REQUEST';
 export const POST_ORDER_SUCCESS = 'POST_ORDER_SUCCESS';

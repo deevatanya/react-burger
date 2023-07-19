@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
+import { Navigate } from 'react-router-dom';
 
 import { 
   CurrencyIcon, 
@@ -33,6 +34,9 @@ function BurgerConstructor() {
   const getBunItem = (state) => state.constructor.bun;
   const unLocked = useSelector(getUnLockedItems);
   const bun = useSelector(getBunItem);
+  const getAuthStatus = (state) => state.user.isAuth;
+  const isAuth = useSelector(getAuthStatus);
+  const [orderAuth, setOrderAuth] = useState(true);
 
   const [, drop] = useDrop({
     accept: "ingredient",
@@ -71,22 +75,28 @@ function BurgerConstructor() {
   }, [ bun, unLocked]);
 
   const handleOrderClick = () => {
-    if (!bun.price) {
-      alert('Выбери булку для своего бургера, не будь фитнес-занудой! :)');
+    if (!isAuth) {
+      setOrderAuth(false);
     } else {
-      const idsArray = unLocked.map(i => i._id);
-      idsArray.unshift(bun._id);
-      idsArray.push(bun._id);
-
-      dispatch(postOrder(
-          `${constants.URL}/orders`, 
-          { "ingredients": idsArray }
-      ));
-      handleOpenModal();
-      dispatch({ type: DELETE_ALL_INGREDIENTS });
-      dispatch({ type: REMOVE_COUNTS });
+      if (!bun.price) {
+        alert('Выбери булку для своего бургера, не будь фитнес-занудой! :)');
+      } else {
+        const idsArray = unLocked.map(i => i._id);
+        idsArray.unshift(bun._id);
+        idsArray.push(bun._id);
+  
+        dispatch(postOrder(
+            `${constants.URL}${constants.PATH.ORDERS}`, 
+            { "ingredients": idsArray }
+        ));
+        handleOpenModal();
+        dispatch({ type: DELETE_ALL_INGREDIENTS });
+        dispatch({ type: REMOVE_COUNTS });
+      }
     }
   };
+
+  
 
   const handleOpenModal = () => {
     setModalVisible({ visible: true });
@@ -114,6 +124,14 @@ function BurgerConstructor() {
       updatedUnLocked
     });
   }, [unLocked, dispatch]);
+  
+  if (!orderAuth) {
+    return (
+      <Navigate
+        to={constants.PATH.LOGIN}
+      />
+    );
+  };
 
   return (
     <>
