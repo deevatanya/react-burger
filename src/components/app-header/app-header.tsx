@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './app-header.module.css';
@@ -6,9 +7,9 @@ import { constants } from '../../constants';
 
 const { PATH } = constants;
 
-function AppHeader() {
+const AppHeader: FC = () => {
     const location = useLocation();
-    const [currentPath, setCurrentPath] = useState(location.pathname);
+    const [currentPath, setCurrentPath] = useState<string>(location.pathname);
 
     useEffect(() => {
         setCurrentPath(location.pathname);

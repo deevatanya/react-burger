@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { useDrag } from 'react-dnd';
-import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -14,8 +13,9 @@ import {
     REMOVE_INGREDIENT_DETAILS 
 } from '../../services/actions/ingredientDetails';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { IIngredient } from '../../services/initialState';
 
-function IngredientCard({ info }) {
+const IngredientCard: FC<{info: IIngredient}> = ({ info }) => {
   const [modalVisible, setModalVisible] = React.useState({ visible: false });
   const { image, price, name, type, count, _id } = info;
   const dispatch = useDispatch();
@@ -85,20 +85,3 @@ function IngredientCard({ info }) {
 }
 
 export default IngredientCard;
-
-IngredientCard.propTypes = {
-    info: PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        image: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        proteins: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        carbohydrates: PropTypes.number.isRequired,
-        calories: PropTypes.number.isRequired,
-        image_large: PropTypes.string.isRequired,
-        image_mobile: PropTypes.string,
-        __v: PropTypes.number
-      }).isRequired
-};

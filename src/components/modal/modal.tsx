@@ -1,16 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { FC } from 'react';
 import { createPortal } from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 
-const modalRoot = document.getElementById("react-modals");
+//@ts-ignore
+const modalRoot: Element | DocumentFragment = document.getElementById("react-modals");
 const escapeKeyCode = 27;
 
-function Modal({ onClose, children, header }) {
+const Modal: FC<{
+    onClose: () => void;
+    header?: string;
+    children: any;
+}> = ({ onClose, children, header }) => {
     React.useEffect(() => {
-        const close = (e) => {
+        const close = (e: {keyCode: number}) => {
           if (e.keyCode === escapeKeyCode) {
             onClose();
           }
@@ -43,8 +47,3 @@ function Modal({ onClose, children, header }) {
 }
 
 export default Modal;
-
-Modal.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    header: PropTypes.string,
-};

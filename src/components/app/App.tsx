@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { 
   HomePage,
@@ -15,7 +16,7 @@ import { constants } from '../../constants';
 
 const { PATH } = constants;
 
-function App() {
+const App: FC = () => {
   let location = useLocation();
   const background = location.state?.background;
   return (
@@ -41,6 +42,3 @@ function App() {
 }
 
 export default App;
-// fix me доделать функционал:
-// <Route path='/ingredients/:id' element={<LoginPage />} />
-

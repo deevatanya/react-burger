@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useDrop, useDrag } from 'react-dnd';
 import { useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from '../constructor-item/constructor-item.module.css';
 import { DELETE_INGREDIENT } from '../../services/actions/constructor';
 import { DECREASE_COUNT } from '../../services/actions/ingredients';
 
-function ConstructorItem({ name, price, image, uuid, _id, moveListItem, index }) {
+type Props = {
+  name: string;
+  price: number;
+  uuid: string;
+  _id: string;
+  image: string;
+  index: number;
+  moveListItem(dragIndex: number, hoverIndex: number): void;
+}
+
+const ConstructorItem: FC<Props> = ({ name, price, image, uuid, _id, moveListItem, index }) => {
   const dispatch = useDispatch();
 
   const handleDeleteClick = () => {
@@ -28,14 +37,16 @@ function ConstructorItem({ name, price, image, uuid, _id, moveListItem, index })
       isDragging: monitor.isDragging(),
     }),
   });
-  
+  const ref = React.useRef<HTMLDivElement>(null);
   const [, dropRef] = useDrop({
       accept: 'item',
-      hover: (item, monitor) => {
-        const dragIndex = item.index;
-        const hoverIndex = index;
+      hover: (item: { index: number }, monitor) => {
+        const dragIndex: number = item?.index;
+        const hoverIndex: number = index;
         const hoverBoundingRect = ref.current?.getBoundingClientRect();
+        //@ts-ignore
         const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+        //@ts-ignore
         const hoverActualY = monitor.getClientOffset().y - hoverBoundingRect.top;
 
         if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) return
@@ -46,9 +57,8 @@ function ConstructorItem({ name, price, image, uuid, _id, moveListItem, index })
       },
     })
   
-    const ref = React.useRef(null)
-    const dragDropRef = dragRef(dropRef(ref));
-    const opacity = isDragging ? 0 : 1;
+    const dragDropRef: any = dragRef(dropRef(ref));
+    const opacity: number = isDragging ? 0 : 1;
 
   return (
     <div className={style.item} ref={dragDropRef} style={{opacity}}>
@@ -67,12 +77,3 @@ function ConstructorItem({ name, price, image, uuid, _id, moveListItem, index })
 }
 
 export default ConstructorItem;
-
-ConstructorItem.propTypes = {
-  image: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  uuid: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
-  moveListItem: PropTypes.func.isRequired
-};
