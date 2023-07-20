@@ -1,28 +1,29 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import styles from './form.module.css';
 import { Button, EmailInput, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { postAuthLogin } from '../services/actions/user';
 import { constants } from '../constants';
+import { IState } from '../services/initialState';
 
-export function RegisterPage() {
-  const [form, setValue] = React.useState({ email: '', password: '', name: '' });
-  const getAuthStatus = (state) => state.user.isAuth;
-  const isAuth = useSelector(getAuthStatus);
+export const RegisterPage: FC = () => {
+  const [form, setValue] = React.useState<{ email: string, password: string, name: string }>({ email: '', password: '', name: '' });
+  const getAuthStatus = (state: IState) => state.user.isAuth;
+  const isAuth: boolean = useSelector(getAuthStatus);
 
   const dispatch = useDispatch();
 
-  const onChange = e => {
+  const onChange = (e: any) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: any) => {
       e.preventDefault();
-      dispatch(postAuthLogin(
+      postAuthLogin(
         `${constants.URL}/auth/register`, 
         form
-    ));
+    )(dispatch);
   };
 
   if (isAuth) {

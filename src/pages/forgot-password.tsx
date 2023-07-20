@@ -1,34 +1,35 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import styles from './form.module.css';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { postForgotPassword, getUser } from '../services/actions/user';
 import { constants } from '../constants';
+import { IState } from '../services/initialState';
 
-export function ForgotPassword() {
-  const [form, setValue] = React.useState({ email: '' });
+export const ForgotPassword: FC = () => {
+  const [form, setValue] = React.useState<{email: string}>({ email: '' });
   const dispatch = useDispatch();
 
-  const getAuthStatus = (state) => state.user.isAuth;
+  const getAuthStatus = (state: IState) => state.user.isAuth;
   const isAuth = useSelector(getAuthStatus);
-  const getResetPass = (state) => state.user.isResetPassword;
+  const getResetPass = (state: IState) => state.user.isResetPassword;
   const isResetPass = useSelector(getResetPass);
 
-  const onChange = e => {
-    setValue({ ...form, [e.target.name]: e.target.value} );
+  const onChange = (e: any) => {
+    setValue({ ...form, [e?.target?.name]: e?.target?.value} );
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: any) => {
       e.preventDefault();
-      dispatch(postForgotPassword(
+      postForgotPassword(
         `${constants.URL}/password-reset`, 
         form
-    ));
+    )(dispatch);
   };
 
   React.useEffect(() => {
-    dispatch(getUser(`${constants.URL}/auth/user`))
+    getUser(`${constants.URL}/auth/user`)(dispatch)
   }, [dispatch]);
   
   if (isAuth) {

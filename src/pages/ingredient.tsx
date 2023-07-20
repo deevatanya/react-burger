@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,19 +8,20 @@ import { getIngredients } from '../services/actions/ingredients';
 import { 
     SET_INGREDIENT_DETAILS, 
 } from '../services/actions/ingredientDetails';
+import { IIngredient, IState } from '../services/initialState';
 
-export function IngredientPage() {
-  const currentId = useParams().id;
+export const IngredientPage: FC = () => {
+  const currentId: string | undefined = useParams().id;
   const dispatch = useDispatch();
 
-  const getIngredientsList = (state) => state.ingredients.ingredientsList;
-  const getIngredientDetails = (state) => state.ingredientDetails;
-  const ingredientDetails = useSelector(getIngredientDetails);
+  const getIngredientsList = (state: IState) => state.ingredients.ingredientsList;
+  const getIngredientDetails = (state: IState) => state.ingredientDetails;
+  const ingredientDetails: IIngredient | any = useSelector(getIngredientDetails);
   const { mains, buns, sauces} = useSelector(getIngredientsList);
 
 
 useEffect(() => {
-	dispatch(getIngredients(`${constants.URL}/ingredients`));
+	getIngredients(`${constants.URL}/ingredients`)(dispatch);
 
 }, [dispatch]);
 

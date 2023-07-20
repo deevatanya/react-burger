@@ -1,33 +1,34 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import styles from './form.module.css';
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { postAuthLogin, getUser } from '../services/actions/user';
 import { constants } from '../constants';
+import { IState } from '../services/initialState';
 
-export function LoginPage() {
-  const [form, setValue] = React.useState({ email: '', password: '' });
-  const getAuthStatus = (state) => state.user.isAuth;
-  const isAuth = useSelector(getAuthStatus);
+export const LoginPage: FC = () => {
+  const [form, setValue] = React.useState<{ email: string; password: string}>({ email: '', password: '' });
+  const getAuthStatus = (state: IState) => state.user.isAuth;
+  const isAuth: boolean = useSelector(getAuthStatus);
 
   const dispatch = useDispatch();
 
-  const onChange = e => {
+  const onChange = (e: any) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  let onSubmit = useCallback((e) => {
+  let onSubmit = useCallback((e: any) => {
       e.preventDefault();
-      dispatch(postAuthLogin(
+      postAuthLogin(
         `${constants.URL}/auth/login`, 
         form
-    ));
+    )(dispatch);
   }, [form, dispatch]
   );
 
   useEffect(() => {
-    dispatch(getUser(`${constants.URL}/auth/user`))
+    getUser(`${constants.URL}/auth/user`)(dispatch)
   }, [dispatch]);
 
   if (isAuth) {

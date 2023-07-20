@@ -28,7 +28,7 @@ export function getUser(URL: string) {
   };
 };
 
-export function patchUser(URL: string, form: { email: string, password: string, name: string }) {
+export function patchUser(URL: string, form: { email?: string, password?: string, name?: string }) {
   return function(dispatch: any) {
     dispatch({
       type: AUTH_REQUEST
@@ -48,7 +48,7 @@ export function patchUser(URL: string, form: { email: string, password: string, 
     });
   };
 };
-export function postAuthLogin(URL: string, form: { email: string, password: string, name: string }) {
+export function postAuthLogin(URL: string, form: { email: string, password: string, name?: string }) {
   return function(dispatch: any) {
     dispatch({
       type: AUTH_REQUEST
@@ -95,7 +95,7 @@ export function postAuthLogout(URL: string) {
   };
 };
 
-export function postForgotPassword(URL: string, form: { password: string, token: string }) {
+export function postForgotPassword(URL: string, form: { password?: string, token?: string, email?: string }) {
   return function(dispatch: any) {
     dispatch({
       type: AUTH_REQUEST

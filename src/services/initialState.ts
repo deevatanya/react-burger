@@ -40,7 +40,7 @@ export interface IState {
         isResetPassword: boolean,
         authRequest: boolean,
         authFailed: boolean,
-        data: {},
+        data: {name: string, email: string},
     }
 }
 export const initialState:IState = {
@@ -71,6 +71,9 @@ export const initialState:IState = {
         isResetPassword: false,
         authRequest: false,
         authFailed: false,
-        data: {},
+        data: {
+            name: '',
+            email: ''
+        },
     }
   };

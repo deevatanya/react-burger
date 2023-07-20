@@ -14,7 +14,7 @@ const Modal: FC<{
     children: any;
 }> = ({ onClose, children, header }) => {
     React.useEffect(() => {
-        const close = (e: {keyCode: number}) => {
+        const close = (e: any) => {
           if (e.keyCode === escapeKeyCode) {
             onClose();
           }

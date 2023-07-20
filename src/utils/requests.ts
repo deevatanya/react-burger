@@ -1,7 +1,7 @@
 import { getCookie, setCookie } from "./cookie";
 import { constants } from '../constants';
 
-export async function getData(URL) {
+export async function getData(URL: string) {
   try {
     const res = await fetch(URL);
     if (res.ok) {
@@ -10,13 +10,13 @@ export async function getData(URL) {
       return await res.json()
         .then((err) => Promise.reject(err))
     }
-  } catch (e) {
+  } catch (e: any) {
     alert(`ooops, error: ${e.message}`);
     console.error(e);
   }
 };
 
-export async function postData(URL, data) {
+export async function postData(URL: string, data: { ingredients: string[] }) {
   try {
     const res = await fetch(URL, {
       method: 'POST',
@@ -31,13 +31,13 @@ export async function postData(URL, data) {
       return await res.json()
         .then((err) => Promise.reject(err));
     }
-  } catch (e) {
+  } catch (e: any) {
     alert(`ooops, error: ${e.message}`);
     console.error(e);
   }
 };
 
-export const postAuth = async (URL, form) => {
+export const postAuth = async (URL: string, form: { password?: string, token?: string, email?: string }) => {
   try {
     const res = await fetch(URL, {
       method: 'POST',
@@ -57,16 +57,16 @@ export const postAuth = async (URL, form) => {
       return await res.json()
         .then((err) => Promise.reject(err))
     }
-  } catch (e){
+  } catch (e: any){
     alert(`ooops, error: ${e.message}`);
     console.error(e);
   }
 }; 
 
-const checkReponse = (res) => {
-  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+const checkReponse = (res: any) => {
+  return res.ok ? res.json() : res.json().then((err: any) => Promise.reject(err));
 };
-export const getAuth = async (URL) => {
+export const getAuth = async (URL: string) => {
   const options = {
     method: 'GET',
     mode: 'cors',
@@ -80,9 +80,10 @@ export const getAuth = async (URL) => {
     referrerPolicy: 'no-referrer'
   };
 try {
+  //@ts-ignore
   const res = await fetch(URL, options);
   return await checkReponse(res);
-  } catch (err) {
+  } catch (err: any) {
     if (err.message === "jwt expired") {
       const token = getCookie('token');
 
@@ -91,7 +92,7 @@ try {
       setCookie('token', refresh.refreshToken);
       setCookie('accessToken', refresh.accessToken);
       options.headers.Authorization = refresh.accessToken;
-
+      //@ts-ignore
       const res2 = await fetch(URL, options);
       return await checkReponse (res2);
     } else {
@@ -100,7 +101,7 @@ try {
   }
 };
 
-export const patchUserAuth = async (URL, form) => {
+export const patchUserAuth = async (URL: string, form: { email?: string, password?: string, name?: string }) => {
   const options = {
     method: 'PATCH',
     mode: 'cors',
@@ -115,9 +116,10 @@ export const patchUserAuth = async (URL, form) => {
     body: JSON.stringify(form)
   };
   try {
+    //@ts-ignore
     const res = await fetch(URL, options);
     return await checkReponse(res);
-    } catch (err) {
+    } catch (err: any) {
       if (err.message === "jwt expired") {
         const token = getCookie('token');
   
@@ -126,7 +128,7 @@ export const patchUserAuth = async (URL, form) => {
         setCookie('token', refresh.refreshToken);
         setCookie('accessToken', refresh.accessToken);
         options.headers.Authorization = refresh.accessToken;
-  
+        //@ts-ignore
         const res2 = await fetch(URL, options);
         return await checkReponse (res2);
       } else {
