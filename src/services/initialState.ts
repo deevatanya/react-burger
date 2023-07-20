@@ -26,9 +26,11 @@ export interface IState {
     },
     constructor: {
         unLocked: IIngredient[],
-        bun: IIngredient | {}
+        // поправить в 5м спринте при типизации стэйта FIXME
+        bun: IIngredient | any
     },
-    ingredientDetails: {},
+    // поправить в 5м спринте при типизации стэйта FIXME
+    ingredientDetails: IIngredient | any,
     order: {
         orders: [],
         orderRequest: boolean,

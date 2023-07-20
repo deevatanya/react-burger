@@ -8,7 +8,7 @@ import { getIngredients } from '../services/actions/ingredients';
 import { 
     SET_INGREDIENT_DETAILS, 
 } from '../services/actions/ingredientDetails';
-import { IIngredient, IState } from '../services/initialState';
+import { IState } from '../services/initialState';
 
 export const IngredientPage: FC = () => {
   const currentId: string | undefined = useParams().id;
@@ -16,7 +16,7 @@ export const IngredientPage: FC = () => {
 
   const getIngredientsList = (state: IState) => state.ingredients.ingredientsList;
   const getIngredientDetails = (state: IState) => state.ingredientDetails;
-  const ingredientDetails: IIngredient | any = useSelector(getIngredientDetails);
+  const ingredientDetails = useSelector(getIngredientDetails);
   const { mains, buns, sauces} = useSelector(getIngredientsList);
 
 

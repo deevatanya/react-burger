@@ -42,9 +42,9 @@ const BurgerConstructor:FC = () => {
   const getUnLockedItems = (state: IState) => state.constructor.unLocked;
   const getBunItem = (state: IState) => state.constructor.bun;
   const getAuthStatus = (state: IState) => state.user.isAuth;
-  const unLocked: IIngredient[] = useSelector(getUnLockedItems);
-  const bun: IIngredient | any  = useSelector(getBunItem);
-  const isAuth: boolean = useSelector(getAuthStatus);
+  const unLocked = useSelector(getUnLockedItems);
+  const bun = useSelector(getBunItem);
+  const isAuth = useSelector(getAuthStatus);
 
   const [, drop] = useDrop({
     accept: "ingredient",
@@ -155,8 +155,7 @@ const BurgerConstructor:FC = () => {
                     text={`${bun.name} (верх)`}
                     price={bun.price}
                     thumbnail={bun.image}
-                  >
-                  </ConstructorElement>
+                  />
               </div>
             </div>   
           )}
@@ -183,8 +182,7 @@ const BurgerConstructor:FC = () => {
                     text={`${bun.name} (низ)`}
                     price={bun.price}
                     thumbnail={bun.image}
-                  >
-                  </ConstructorElement>
+                  />
               </div>
             </div>
           )}

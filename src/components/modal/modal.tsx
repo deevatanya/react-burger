@@ -6,20 +6,21 @@ import ModalOverlay from '../modal-overlay/modal-overlay';
 
 //@ts-ignore
 const modalRoot: Element | DocumentFragment = document.getElementById("react-modals");
-const escapeKeyCode = 27;
+const escapeKeyCode: string = 'Escape';
 
 const Modal: FC<{
     onClose: () => void;
     header?: string;
     children: any;
 }> = ({ onClose, children, header }) => {
+
     React.useEffect(() => {
-        const close = (e: any) => {
-          if (e.keyCode === escapeKeyCode) {
-            onClose();
-          }
+        const close = (e: KeyboardEvent) => {
+            if ((e as KeyboardEvent).key === escapeKeyCode) {
+                onClose();
+            }
         }
-        window.addEventListener('keydown', close)
+        window.addEventListener('keydown', close);
       return () => window.removeEventListener('keydown', close)
     },[onClose]);
 

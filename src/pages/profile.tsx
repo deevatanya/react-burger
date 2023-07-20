@@ -19,7 +19,7 @@ export const ProfilePage: FC = () => {
   const [buttonsVisible, setButtonsVisible] = useState<boolean>(false);
   const dispatch = useDispatch();
 
-  const onChange = (e: any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
   const onLogout = () => {
@@ -40,7 +40,7 @@ export const ProfilePage: FC = () => {
     setButtonsVisible(true);
   }
 
-  const onSubmit = (e: any) => {
+  const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     patchUser(`${constants.URL}/auth/user`, form)(dispatch);
     disabled.emailDisable = true;

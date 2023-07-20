@@ -9,7 +9,7 @@ import { getIngredients } from '../../services/actions/ingredients';
 import { IState } from '../../services/initialState';
 
 const BurgerIngredients: FC = () => {
-    const [current, setCurrent] = useState<string>('buns');
+    const [current, setCurrent] = useState('buns');
 
     const getIngredientsList = (state: IState) => state.ingredients.ingredientsList;
     const { mains, buns, sauces } = useSelector(getIngredientsList);

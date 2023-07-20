@@ -14,11 +14,11 @@ export const LoginPage: FC = () => {
 
   const dispatch = useDispatch();
 
-  const onChange = (e: any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  let onSubmit = useCallback((e: any) => {
+  let onSubmit = useCallback((e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
       postAuthLogin(
         `${constants.URL}/auth/login`, 

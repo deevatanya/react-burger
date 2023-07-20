@@ -13,11 +13,11 @@ export const ResetPassword: FC = () => {
   const getAuthStatus = (state: IState) => state.user.isAuth;
   const isAuth: boolean = useSelector(getAuthStatus);
 
-  const onChange = (e: any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value} );
   };
 
-  const onSubmit = (e: any) => {
+  const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
       postForgotPassword(
         `${constants.URL}/password-reset/reset`, 

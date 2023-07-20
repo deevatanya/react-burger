@@ -14,11 +14,11 @@ export const RegisterPage: FC = () => {
 
   const dispatch = useDispatch();
 
-  const onChange = (e: any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = (e: any) => {
+  const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
       postAuthLogin(
         `${constants.URL}/auth/register`, 

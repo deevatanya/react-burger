@@ -41,8 +41,8 @@ const ConstructorItem: FC<Props> = ({ name, price, image, uuid, _id, moveListIte
   const [, dropRef] = useDrop({
       accept: 'item',
       hover: (item: { index: number }, monitor) => {
-        const dragIndex: number = item?.index;
-        const hoverIndex: number = index;
+        const dragIndex = item?.index;
+        const hoverIndex = index;
         const hoverBoundingRect = ref.current?.getBoundingClientRect();
         //@ts-ignore
         const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
@@ -70,8 +70,7 @@ const ConstructorItem: FC<Props> = ({ name, price, image, uuid, _id, moveListIte
         price={price}
         thumbnail={image}
         handleClose={handleDeleteClick}
-      > 
-      </ConstructorElement>
+      />
     </div>
   )
 }

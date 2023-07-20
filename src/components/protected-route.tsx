@@ -4,7 +4,7 @@ import { Navigate } from "react-router";
 import { IState } from "../services/initialState";
 
 type Props = {
-    element: React.ReactNode;
+    element: React.ReactElement;
   }
 
 export const ProtectedRouteElement: FC<Props> = ({ element }) => {

@@ -1,6 +1,8 @@
 import { getCookie, setCookie } from "./cookie";
 import { constants } from '../constants';
 
+interface IForm { password?: string, token?: string, email?: string }
+
 export async function getData(URL: string) {
   try {
     const res = await fetch(URL);
@@ -37,7 +39,7 @@ export async function postData(URL: string, data: { ingredients: string[] }) {
   }
 };
 
-export const postAuth = async (URL: string, form: { password?: string, token?: string, email?: string }) => {
+export const postAuth = async (URL: string, form: IForm) => {
   try {
     const res = await fetch(URL, {
       method: 'POST',
@@ -63,7 +65,7 @@ export const postAuth = async (URL: string, form: { password?: string, token?: s
   }
 }; 
 
-const checkReponse = (res: any) => {
+const checkReponse = (res: Response) => {
   return res.ok ? res.json() : res.json().then((err: any) => Promise.reject(err));
 };
 export const getAuth = async (URL: string) => {
@@ -101,7 +103,7 @@ try {
   }
 };
 
-export const patchUserAuth = async (URL: string, form: { email?: string, password?: string, name?: string }) => {
+export const patchUserAuth = async (URL: string, form: IForm) => {
   const options = {
     method: 'PATCH',
     mode: 'cors',
