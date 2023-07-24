@@ -1,4 +1,18 @@
-export const constants = {
+export interface IConstants {
+    URL: string,
+    PATH: {
+        HOME: string;
+        PROFILE: string;
+        ORDERS: string;
+        LOGIN: string;
+        REGISTER: string;
+        FORGOT_PASSWORD: string;
+        RESET_PASSWORD: string;
+        INGREDIENTS: string;
+        FEED: string;
+    }
+}
+export const constants: IConstants = {
     URL: 'https://norma.nomoreparties.space/api',
     PATH: {
         HOME: '/',

@@ -1,60 +1,59 @@
-import { useState } from 'react';
+import { useState, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './profile.module.css';
-import { EmailInput, PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { patchUser } from '../services/actions/user';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { constants } from '../constants';
 import { postAuthLogout } from '../services/actions/user';
+import { IState } from '../services/initialState';
 
 const { PATH } = constants;
-export function ProfilePage() {
+export const ProfilePage: FC = () => {
   const {
     name,
     email
-  } = useSelector(store => store.user.data);
-  const [form, setValue] = useState({ email: email, password: '******', name: name });
-  const [disabled, setDisabled] = useState({ emailDisable: true, passwordDisable: true, nameDisable: true });
-  const [buttonsVisible, setButtonsVisible] = useState(false);
+  } = useSelector((store: IState) => store.user.data);
+  const [form, setValue] = useState<{ email: string, password: string, name: string }>({ email: email, password: '******', name: name });
+  const [disabled, setDisabled] = useState<{ emailDisable: boolean, passwordDisable: boolean, nameDisable: boolean }>({ emailDisable: true, passwordDisable: true, nameDisable: true });
+  const [buttonsVisible, setButtonsVisible] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const onChange = e => {
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
-
   const onLogout = () => {
-    dispatch(postAuthLogout(`${constants.URL}/auth/logout`));
-    navigate(constants.PATH.LOGIN, {replace: true});
+   postAuthLogout(`${constants.URL}/auth/logout`)(dispatch);
   };
-  const onNameClick = (e) => {
+  const onNameClick = () => {
     setDisabled({...disabled, nameDisable: false});
     setButtonsVisible(true);
   }
 
-  const onPasswordClick = (e) => {
+  const onPasswordClick = () => {
     setDisabled({...disabled, passwordDisable: false});
     setButtonsVisible(true);
   }
 
-  const onEmailClick = (e) => {
+  const onEmailClick = () => {
     setDisabled({...disabled, emailDisable: false});
     setButtonsVisible(true);
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(patchUser(`${constants.URL}/auth/user`, form));
-    for (let i in disabled) {
-      disabled[i] = true;
-    }
+    patchUser(`${constants.URL}/auth/user`, form)(dispatch);
+    disabled.emailDisable = true;
+    disabled.passwordDisable = true;
+    disabled.nameDisable = true;
     setButtonsVisible(false);
   }
 
-  const onReset = (e) => {
+  const onReset = () => {
     setValue({ email: email, password: '******', name: name });
-    for (let i in disabled) {
-      disabled[i] = true;
-    }
+    disabled.emailDisable = true;
+    disabled.passwordDisable = true;
+    disabled.nameDisable = true;
     setButtonsVisible(false);
   }
 
@@ -72,7 +71,7 @@ export function ProfilePage() {
               История заказов
             </p>
           </Link>
-          <Link className={styles.link} onClick={onLogout}>
+          <Link to={{pathname: PATH.LOGIN}} className={styles.link} onClick={onLogout}>
             <p className="text text_type_main-medium text_color_inactive">
               Выход
             </p>
@@ -97,7 +96,7 @@ export function ProfilePage() {
               disabled={disabled.nameDisable}
             />
             <div className="mt-6"></div>
-            <EmailInput
+            <Input
               onChange={onChange}
               value={form.email}
               name={'email'}
@@ -107,7 +106,7 @@ export function ProfilePage() {
               disabled={disabled.emailDisable}
             />
             <div className="mt-6"></div>
-            <PasswordInput
+            <Input
               onChange={onChange}
               value={form.password}
               name={'password'}

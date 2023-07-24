@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FC } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCard from '../ingredient-card/ingredient-card';
@@ -6,19 +6,20 @@ import style from './burger-ingredients.module.css';
 import { constants } from '../../constants';
 import { useSelector, useDispatch } from 'react-redux';
 import { getIngredients } from '../../services/actions/ingredients';
+import { IState } from '../../services/initialState';
 
-function BurgerIngredients() {
+const BurgerIngredients: FC = () => {
     const [current, setCurrent] = useState('buns');
 
-    const getIngredientsList = (state) => state.ingredients.ingredientsList;
+    const getIngredientsList = (state: IState) => state.ingredients.ingredientsList;
     const { mains, buns, sauces } = useSelector(getIngredientsList);
 
     const dispatch = useDispatch();
     useEffect(() => {
-      dispatch(getIngredients(`${constants.URL}/ingredients`))
+      getIngredients(`${constants.URL}/ingredients`)(dispatch)
     }, [dispatch]);
 
-    const scroll = (type) => document.getElementById(type).scrollIntoView({behavior: "smooth", block: "start"});
+    const scroll = (type: string) => document.getElementById(type)?.scrollIntoView({behavior: "smooth", block: "start"});
     const [ refBuns, inViewBuns ] = useInView({
       threshold: 0,
     });

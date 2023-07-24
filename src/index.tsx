@@ -10,14 +10,17 @@ import { BrowserRouter } from 'react-router-dom';
 import { initialState } from './services/initialState';
 
 const composeEnhancers =
+//@ts-ignore
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+//@ts-ignore
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
     : compose; 
 const enhancer = composeEnhancers(applyMiddleware(thunk));
+//@ts-ignore
 const store = createStore(rootReducer, initialState, enhancer);
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root')
+  document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>

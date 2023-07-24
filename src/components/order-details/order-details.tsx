@@ -1,8 +1,10 @@
+import { FC } from 'react';
+import { IState } from '../../services/initialState';
 import style from './order-details.module.css';
 import { useSelector} from 'react-redux';
 
-function OrderDetails() {
-    const getOrderNumber = (state) => state.order.currentNumber;
+const OrderDetails: FC = () => {
+    const getOrderNumber = (state: IState) => state.order.currentNumber;
     const orderNumber = useSelector(getOrderNumber);
 
     return (

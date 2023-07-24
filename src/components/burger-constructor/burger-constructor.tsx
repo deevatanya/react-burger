@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { useState, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
@@ -13,6 +14,7 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import style from './burger-constructor.module.css';
 import { constants } from '../../constants';
+import { IState, IIngredient } from '../../services/initialState';
 
 import { 
   ADD_UNLOCKED_INGREDIENT, 
@@ -27,20 +29,26 @@ import {
 } from '../../services/actions/ingredients';
 import { postOrder } from '../../services/actions/order';
 
-function BurgerConstructor() {
-  const [modalVisible, setModalVisible] = useState({ visible: false });
+
+const BurgerConstructor:FC = () => {
+  interface IModal {
+    visible: boolean;
+  }
+
+  const [modalVisible, setModalVisible] = useState<IModal>({ visible: false });
+  const [orderAuth, setOrderAuth] = useState<boolean>(true);
+
   const dispatch = useDispatch();
-  const getUnLockedItems = (state) => state.constructor.unLocked;
-  const getBunItem = (state) => state.constructor.bun;
+  const getUnLockedItems = (state: IState) => state.constructor.unLocked;
+  const getBunItem = (state: IState) => state.constructor.bun;
+  const getAuthStatus = (state: IState) => state.user.isAuth;
   const unLocked = useSelector(getUnLockedItems);
   const bun = useSelector(getBunItem);
-  const getAuthStatus = (state) => state.user.isAuth;
   const isAuth = useSelector(getAuthStatus);
-  const [orderAuth, setOrderAuth] = useState(true);
 
   const [, drop] = useDrop({
     accept: "ingredient",
-    drop(info) {
+    drop(info: IIngredient) {
       if (info.type === 'bun') {
         dispatch({
           type: ADD_BUN_INGREDIENT,
@@ -63,7 +71,7 @@ function BurgerConstructor() {
     },
   });
 
-  const totalPrice = useMemo(() => {
+  const totalPrice = useMemo<number>(() => {
     let sum = 0;
     if (unLocked.length) {
       sum += unLocked.reduce((a, j) => a + (j.price || 0), 0)
@@ -85,18 +93,16 @@ function BurgerConstructor() {
         idsArray.unshift(bun._id);
         idsArray.push(bun._id);
   
-        dispatch(postOrder(
-            `${constants.URL}${constants.PATH.ORDERS}`, 
-            { "ingredients": idsArray }
-        ));
+        postOrder(
+          `${constants.URL}${constants.PATH.ORDERS}`,
+          { ingredients: idsArray }
+        )(dispatch);
         handleOpenModal();
         dispatch({ type: DELETE_ALL_INGREDIENTS });
         dispatch({ type: REMOVE_COUNTS });
       }
     }
   };
-
-  
 
   const handleOpenModal = () => {
     setModalVisible({ visible: true });
@@ -111,7 +117,7 @@ function BurgerConstructor() {
     </Modal>
   );
 
-  const moveListItem = useCallback((dragIndex, hoverIndex) => {
+  const moveListItem = useCallback((dragIndex: number, hoverIndex: number) => {
     const dragItem = unLocked[dragIndex]
     const hoverItem = unLocked[hoverIndex]
 
@@ -144,18 +150,17 @@ function BurgerConstructor() {
             <div className={style.item}>
               <div className='ml-8 top'>
                   <ConstructorElement
-                    type="top"
+                    type={"top"}
                     isLocked={true}
                     text={`${bun.name} (верх)`}
                     price={bun.price}
                     thumbnail={bun.image}
-                  >
-                  </ConstructorElement>
+                  />
               </div>
             </div>   
           )}
 
-            { unLocked.length ? (unLocked.map((i, index) => (
+            { unLocked.length ? (unLocked.map((i: IIngredient, index: number) => (
               <ConstructorItem 
                 name={i.name} 
                 price={i.price} 
@@ -177,8 +182,7 @@ function BurgerConstructor() {
                     text={`${bun.name} (низ)`}
                     price={bun.price}
                     thumbnail={bun.image}
-                  >
-                  </ConstructorElement>
+                  />
               </div>
             </div>
           )}
