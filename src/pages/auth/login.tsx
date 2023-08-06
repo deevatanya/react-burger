@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import styles from './form.module.css';
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { postAuthLogin, getUser } from '../services/actions/user';
-import { constants } from '../constants';
-import { IState } from '../services/initialState';
+import { postAuthLogin, getUser } from '../../services/actions/user';
+import { constants } from '../../constants';
+import { IState } from '../../services/initialState';
 
 export const LoginPage: FC = () => {
   const [form, setValue] = React.useState<{ email: string; password: string}>({ email: '', password: '' });

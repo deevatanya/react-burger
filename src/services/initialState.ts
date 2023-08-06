@@ -14,6 +14,7 @@ export interface IIngredient {
     count: number;
 };
 export interface IMessage {
+    UUID: string,
     status: string,
     number: number,
     createdAt: string,
@@ -105,6 +106,7 @@ export const initialState:IState = {
             createdAt: '',
             updatedAt: '',
             name: '',
+            UUID: '',
         }
     },
     user: {

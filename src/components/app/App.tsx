@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { 
   HomePage,
@@ -16,12 +16,21 @@ import {
 import AppHeader from '../app-header/app-header';
 import { ProtectedRouteElement } from '../protected-route';
 import { constants } from '../../constants';
-
+import { getIngredients } from '../../services/actions/ingredients';
+import { useDispatch } from 'react-redux';
+import { getUser } from '../../services/actions/user';
 const { PATH } = constants;
 
 const App: FC = () => {
   let location = useLocation();
   const background = location.state?.background;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    getUser(`${constants.URL}/auth/user`)(dispatch)
+  }, [dispatch]);
+  useEffect(() => {
+		getIngredients(`${constants.URL}/ingredients`)(dispatch);
+	}, [dispatch]);
   return (
     <>
       <AppHeader />

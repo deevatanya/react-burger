@@ -2,10 +2,10 @@ import { useState, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './profile.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { patchUser } from '../services/actions/user';
-import { constants } from '../constants';
-import { IState } from '../services/initialState';
-import ProfileMenu from '../components/profile-menu/profile-menu';
+import { patchUser } from '../../services/actions/user';
+import { constants } from '../../constants';
+import { IState } from '../../services/initialState';
+import ProfileMenu from '../../components/profile-menu/profile-menu';
 
 export const ProfilePage: FC = () => {
   const {

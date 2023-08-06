@@ -19,7 +19,7 @@ export const OrdersFeed: FC = () => {
             <section>
             { messages && messages.length ? (messages.map((i: IMessage) => (
                     <OrderCard 
-                        key={i._id}
+                        UUID={i.UUID}
                         number={i.number}
                         status={i.status}
                         _id={i._id}

@@ -1,14 +1,14 @@
-import { LoginPage } from './login';
-import { HomePage } from './home';
-import { NotFound404 } from './not-found';
-import { RegisterPage } from './register';
-import { ForgotPassword } from './forgot-password';
-import { ResetPassword } from './reset-password';
-import { ProfilePage } from './profile';
-import { IngredientPage } from './ingredient';
-import { FeedPage } from './feed';
-import { OrderPage } from './order';
-import { HistoryPage } from './history';
+import { LoginPage } from './auth/login';
+import { HomePage } from './home/home';
+import { NotFound404 } from './not-found/not-found';
+import { RegisterPage } from './auth/register';
+import { ForgotPassword } from './auth/forgot-password';
+import { ResetPassword } from './auth/reset-password';
+import { ProfilePage } from './profile/profile';
+import { IngredientPage } from './ingredient/ingredient';
+import { FeedPage } from './feed/feed';
+import { OrderPage } from './order/order';
+import { HistoryPage } from './profile/history';
 
 export {HomePage};
 export {LoginPage};

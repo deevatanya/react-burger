@@ -9,7 +9,7 @@ import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burge
 import { constants } from '../../constants';
 
 const { PATH } = constants;
-export const OrderCard: FC<IMessage> = ({number, status, _id, createdAt, ingredients, name}) => {
+export const OrderCard: FC<IMessage> = ({number, status, _id, createdAt, ingredients, name, UUID}) => {
     const getIngredientsList = (state: IState) => state.ingredients.ingredientsList;
     const { mains, buns, sauces} = useSelector(getIngredientsList);
     const location = useLocation();
@@ -18,20 +18,19 @@ export const OrderCard: FC<IMessage> = ({number, status, _id, createdAt, ingredi
         let sum: number = 0;
         if (ingredients) {
             ingredients.map((id) => {
-                //@ts-ignore
-                return sum += [...mains, ...buns, ...sauces]?.find((item) => item._id === id)?.price;
+                return sum += [...mains, ...buns, ...sauces]?.find((item) => item._id === id)?.price || 0;
             })
         }
         return sum;
     }, [ingredients, mains, buns, sauces])
 
     const handleClick = () => {
-        dispatch({type: SET_ORDER_DETAILS, orderData: { number, status, _id, createdAt, name, ingredients }});
+        dispatch({type: SET_ORDER_DETAILS, orderData: { number, status, _id, createdAt, name, ingredients, UUID }});
     };
 
     return (
         <Link
-            key={_id}
+            key={UUID}
             to={{pathname: 
                 `${location.pathname === PATH.FEED ? `/feed/${_id}` : `/profile/orders/${_id}`}`
             }}

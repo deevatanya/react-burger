@@ -1,14 +1,33 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useEffect } from 'react';
 import style from './order.module.css';
-import { useSelector } from 'react-redux';
-import { IState } from '../services/initialState';
+import { useSelector, useDispatch } from 'react-redux';
+import { IState } from '../../services/initialState';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useParams } from 'react-router-dom';
+import { WS_CONNECTION_START, WS_CONNECTION_CLOSED, SET_ORDER_DETAILS } from '../../services/constants/index';
 
 export const OrderPage: FC = () => {
+    const currentId: string | undefined = useParams().id;
+    const dispatch = useDispatch();
     const getIngredientsList = (state: IState) => state.ingredients.ingredientsList;
     const { mains, buns, sauces} = useSelector(getIngredientsList);
     const getOrderData = (state: IState) => state.order.orderData;
     const { number, status, createdAt, name, ingredients } = useSelector(getOrderData);
+    const getws = (state: IState) => state.ws;
+    const { messages } = useSelector(getws);
+
+	useEffect(() => {
+        dispatch({type: WS_CONNECTION_START});
+		return () => {
+		dispatch({type: WS_CONNECTION_CLOSED});
+		};
+		},
+		[dispatch],
+	);
+	useEffect(() => {
+        const info = messages.find((item) => item._id === currentId);
+        dispatch({type: SET_ORDER_DETAILS, orderData: info});
+     },[dispatch, currentId, messages]);
 
     const ruStatus = useMemo<string>(() => {
         let s: string = '';
@@ -24,8 +43,7 @@ export const OrderPage: FC = () => {
         let sum: number = 0;
         if (ingredients) {
             ingredients.map((id) => {
-                //@ts-ignore
-                return sum += [...mains, ...buns, ...sauces]?.find((item) => item._id === id)?.price;
+                return sum += [...mains, ...buns, ...sauces]?.find((item) => item._id === id)?.price || 0;
             })
         }
         return sum;
