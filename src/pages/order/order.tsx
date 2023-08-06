@@ -72,7 +72,7 @@ export const OrderPage: FC = () => {
                     <div className='pt-6'></div>
                     <div className={style.section}>
                         { ingredients  ? (ingredients.map((id: string) => (
-                            <div className={style.row}>
+                            <div className={style.row} key={Math.random()}>
                                 <img 
                                     src={[...mains, ...buns, ...sauces]?.find((item) => item._id === id)?.image_mobile} 
                                     alt='mobile'

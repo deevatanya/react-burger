@@ -6,7 +6,6 @@ import {
   } from '../constants';
 import type {TWSActions } from '../actions/socket';
 import { initialState, IState, IMessage } from '../initialState';
-import { v4 as uuidv4 } from 'uuid';
 
 export const wsReducer = (state: IState['ws'] = initialState.ws, action: TWSActions) => {
 switch (action.type) {
@@ -32,11 +31,7 @@ switch (action.type) {
     };
 
     case WS_GET_MESSAGE:
-    const UUID = uuidv4();
     const ordersParsed: {success: boolean, orders: IMessage[], total: number, totalToday: number} = JSON.parse(action.payload);
-    ordersParsed?.orders?.map((order) => {
-        return {...order, UUID}
-    });
     return {
         ...state,
         error: undefined,

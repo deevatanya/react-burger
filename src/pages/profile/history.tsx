@@ -24,15 +24,10 @@ export const HistoryPage: FC = () => {
     <>
       <ProfileMenu/>
       <div className={styles.section}>
-        { messages && messages.length ? (messages.map((i: IMessage) => (
+        { messages.length ? (messages.map((i: IMessage) => (
           <OrderCard 
-              UUID={i.UUID}
-              number={i.number}
-              status={i.status}
-              _id={i._id}
-              createdAt={i.createdAt}
-              ingredients={i.ingredients}
-              name={i.name}
+            key={i._id}
+            info={i}
             />
           ))) : (<p className="text text_type_digits-medium">У Вас пока нет заказов</p>) }
       </div>

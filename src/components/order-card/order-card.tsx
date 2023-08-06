@@ -9,7 +9,8 @@ import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burge
 import { constants } from '../../constants';
 
 const { PATH } = constants;
-export const OrderCard: FC<IMessage> = ({number, status, _id, createdAt, ingredients, name, UUID}) => {
+export const OrderCard: FC<{info: IMessage}> = ( {info} ) => {
+    const {number, status, _id, createdAt, ingredients, name} = info;
     const getIngredientsList = (state: IState) => state.ingredients.ingredientsList;
     const { mains, buns, sauces} = useSelector(getIngredientsList);
     const location = useLocation();
@@ -25,12 +26,11 @@ export const OrderCard: FC<IMessage> = ({number, status, _id, createdAt, ingredi
     }, [ingredients, mains, buns, sauces])
 
     const handleClick = () => {
-        dispatch({type: SET_ORDER_DETAILS, orderData: { number, status, _id, createdAt, name, ingredients, UUID }});
+        dispatch({type: SET_ORDER_DETAILS, orderData: { number, status, _id, createdAt, name, ingredients }});
     };
-
     return (
         <Link
-            key={UUID}
+            key={_id}
             to={{pathname: 
                 `${location.pathname === PATH.FEED ? `/feed/${_id}` : `/profile/orders/${_id}`}`
             }}
@@ -57,6 +57,7 @@ export const OrderCard: FC<IMessage> = ({number, status, _id, createdAt, ingredi
                             <img 
                                 src={[...mains, ...buns, ...sauces]?.find((item) => item._id === id)?.image_mobile} 
                                 alt='mobile'
+                                key={Math.random()}
                             >
                             </img>
                         ))) : null }

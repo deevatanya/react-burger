@@ -17,15 +17,10 @@ export const OrdersFeed: FC = () => {
             </p>
 
             <section>
-            { messages && messages.length ? (messages.map((i: IMessage) => (
+            { messages.length ? (messages.map((i: IMessage) => (
                     <OrderCard 
-                        UUID={i.UUID}
-                        number={i.number}
-                        status={i.status}
-                        _id={i._id}
-                        createdAt={i.createdAt}
-                        ingredients={i.ingredients}
-                        name={i.name}
+                        key={i._id}
+                        info={i}
                     />
                 ))) : null }
             </section>
