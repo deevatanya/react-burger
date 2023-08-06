@@ -4,12 +4,16 @@ import { WS_CONNECTION_START, WS_CONNECTION_CLOSED } from '../services/constants
 import { useSelector, useDispatch } from 'react-redux';
 import { IState } from '../services/initialState';
 import style from './feed.module.css';
+import { getIngredients } from '../services/actions/ingredients';
+import { constants } from '../constants';
 
 export const FeedPage: FC = () => {
 	const dispatch = useDispatch();
     const getWS = (state: IState) => state.ws;
   	const ws = useSelector(getWS);
-
+	useEffect(() => {
+		getIngredients(`${constants.URL}/ingredients`)(dispatch);
+	}, [dispatch]);
 	useEffect(
 		() => {
 		dispatch({type: WS_CONNECTION_START});

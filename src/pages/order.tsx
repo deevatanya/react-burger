@@ -2,9 +2,7 @@ import { FC, useMemo } from 'react';
 import style from './order.module.css';
 import { useSelector } from 'react-redux';
 import { IState } from '../services/initialState';
-import moment from 'moment';
-import 'moment/locale/ru';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 
 export const OrderPage: FC = () => {
     const getIngredientsList = (state: IState) => state.ingredients.ingredientsList;
@@ -33,10 +31,6 @@ export const OrderPage: FC = () => {
         return sum;
     }, [ingredients, mains, buns, sauces]);
 
-    const formatOrderTime = (time: moment.MomentInput) => {
-        moment.locale('ru');
-        return moment(time).calendar();
-    };
     return (
         <>
             <div className={style.card}>
@@ -82,7 +76,7 @@ export const OrderPage: FC = () => {
 
                 <div className={style.footer}>
                     <p className="text text_type_main-default text_color_inactive" >
-                        {formatOrderTime(String(createdAt))}
+                        <FormattedDate date={new Date(createdAt)} />
                     </p>
 
                     <div className={style.price}>

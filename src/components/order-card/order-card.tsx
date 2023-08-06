@@ -1,13 +1,11 @@
 import { FC, useMemo } from "react";
 import { IMessage } from "../../services/initialState";
 import style from './order-card.module.css';
-import moment from 'moment';
-import 'moment/locale/ru';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_ORDER_DETAILS } from '../../services/constants/index';
 import { IState } from "../../services/initialState";
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { constants } from '../../constants';
 
 const { PATH } = constants;
@@ -30,10 +28,6 @@ export const OrderCard: FC<IMessage> = ({number, status, _id, createdAt, ingredi
     const handleClick = () => {
         dispatch({type: SET_ORDER_DETAILS, orderData: { number, status, _id, createdAt, name, ingredients }});
     };
-    const formatOrderTime = (time: moment.MomentInput) => {
-        moment.locale('ru');
-        return moment(time).calendar();
-    };
 
     return (
         <Link
@@ -49,7 +43,7 @@ export const OrderCard: FC<IMessage> = ({number, status, _id, createdAt, ingredi
                         #{number}
                     </p>
                     <p className="text text_type_main-default text_color_inactive" >
-                        {formatOrderTime(String(createdAt))}
+                        <FormattedDate date={new Date(createdAt)} />
                     </p>
                 </div>
                 <div className="pt-6"></div>
