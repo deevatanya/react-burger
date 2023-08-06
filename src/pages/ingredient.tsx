@@ -7,7 +7,7 @@ import IngredientDetails from '../components/ingredient-details/ingredient-detai
 import { getIngredients } from '../services/actions/ingredients';
 import { 
     SET_INGREDIENT_DETAILS, 
-} from '../services/actions/ingredientDetails';
+} from '../services/constants/index';
 import { IState } from '../services/initialState';
 
 export const IngredientPage: FC = () => {
@@ -33,7 +33,7 @@ useEffect(() => {
     
   return (
     <>
-			{!ingredientDetails._id ?
+			{!ingredientDetails ?
 			(<div className='center_info'>
 				<p className="text text_type_main-large">
 					Ингредиент не найден

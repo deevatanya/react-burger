@@ -11,7 +11,7 @@ import style from './ingredient-card.module.css';
 import { 
     SET_INGREDIENT_DETAILS, 
     REMOVE_INGREDIENT_DETAILS 
-} from '../../services/actions/ingredientDetails';
+} from '../../services/constants/index';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { IIngredient } from '../../services/initialState';
 

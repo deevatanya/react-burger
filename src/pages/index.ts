@@ -6,6 +6,9 @@ import { ForgotPassword } from './forgot-password';
 import { ResetPassword } from './reset-password';
 import { ProfilePage } from './profile';
 import { IngredientPage } from './ingredient';
+import { FeedPage } from './feed';
+import { OrderPage } from './order';
+import { HistoryPage } from './history';
 
 export {HomePage};
 export {LoginPage};
@@ -15,3 +18,6 @@ export {ForgotPassword};
 export {ResetPassword};
 export {ProfilePage};
 export {IngredientPage};
+export {FeedPage};
+export {OrderPage};
+export {HistoryPage};

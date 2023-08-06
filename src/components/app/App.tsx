@@ -8,7 +8,10 @@ import {
   ResetPassword, 
   ProfilePage,
   NotFound404, 
-  IngredientPage
+  IngredientPage,
+  FeedPage,
+  OrderPage,
+  HistoryPage
 } from '../../pages';
 import AppHeader from '../app-header/app-header';
 import { ProtectedRouteElement } from '../protected-route';
@@ -24,8 +27,15 @@ const App: FC = () => {
       <AppHeader />
       <Routes location={background || location}>
         <Route path={PATH.HOME} element={<HomePage />} />
-        <Route path={PATH.PROFILE} element={<ProtectedRouteElement element={<ProfilePage />} />} />
         <Route path={`${PATH.INGREDIENTS}/:id`} element={<IngredientPage />} />
+
+        <Route path={PATH.FEED} element={<FeedPage />} />
+        <Route path={`${PATH.FEED}/:id`} element={<OrderPage />} />
+
+        <Route path={PATH.PROFILE} element={<ProtectedRouteElement element={<ProfilePage />} />} />
+        <Route path={`${PATH.PROFILE}/orders`} element={<ProtectedRouteElement element={<HistoryPage />} />} />
+        <Route path={`${PATH.PROFILE}/orders/:id`} element={<ProtectedRouteElement element={<OrderPage />} />} />
+
         <Route path={PATH.LOGIN} element={<LoginPage />} />
         <Route path={PATH.REGISTER} element={<RegisterPage />} />
         <Route path={PATH.FORGOT_PASSWORD} element={<ForgotPassword />} />
@@ -35,6 +45,7 @@ const App: FC = () => {
       {background ? (
         <Routes>
           <Route path={`${PATH.INGREDIENTS}/:id`} element={<HomePage />} />
+
         </Routes>
         ) : null }
     </>

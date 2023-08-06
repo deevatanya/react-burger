@@ -4,10 +4,11 @@ import {
   DELETE_INGREDIENT, 
   DELETE_ALL_INGREDIENTS,
   UPDATE_UNLOCKED
-} from '../actions/constructor';
-import { initialState } from '../initialState';
+} from '../constants';
+import { initialState, IState } from '../initialState';
+import { TConstructorActions } from '../actions/constructor';
 
-export const constructorReducer = (state = initialState.constructor, action) => {
+export const constructorReducer = (state: IState['constructor'] = initialState.constructor, action: TConstructorActions) => {
   switch (action.type) {
     case DELETE_INGREDIENT: {
       return { 

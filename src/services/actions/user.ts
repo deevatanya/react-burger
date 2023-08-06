@@ -1,11 +1,35 @@
 
 import { postAuth, getAuth, patchUserAuth } from '../../utils/requests';
 import { deleteCookie, setCookie, getCookie } from "../../utils/cookie";
+import {
+  AUTH_REQUEST, 
+  AUTH_SUCCESS,
+  AUTH_FAILED,
+  POST_RESET_PASS_SUCCESS
+} from '../constants/index'
 
-export const AUTH_REQUEST: string = 'AUTH_REQUEST';
-export const AUTH_SUCCESS: string = 'AUTH_SUCCESS';
-export const AUTH_FAILED: string = 'AUTH_FAILED';
-export const POST_RESET_PASS_SUCCESS: string = 'POST_RESET_PASS_SUCCESS';
+export interface IAuthRequestAction {
+  readonly type: typeof AUTH_REQUEST;
+}
+
+export interface IAuthSuccessAction {
+  readonly type: typeof AUTH_SUCCESS;
+  readonly isAuth: boolean;
+  readonly info: {name: string, email: string};
+}
+
+export interface IAuthFailedAction {
+  readonly type: typeof AUTH_FAILED;
+}
+
+export interface IPostResetPassSuccessAction {
+  readonly type: typeof POST_RESET_PASS_SUCCESS;
+}
+
+export type TUserActions = IAuthRequestAction
+    | IAuthSuccessAction
+    | IAuthFailedAction
+    | IPostResetPassSuccessAction;
 
 export function getUser(URL: string) {
   return function(dispatch: any) {
