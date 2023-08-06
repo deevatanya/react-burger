@@ -7,7 +7,7 @@ import { userReducer } from './user';
 import { wsReducer } from './socket';
 
 export const rootReducer = combineReducers({
-  constructor: constructorReducer,
+  constructorBurger: constructorReducer,
   ingredients: ingredientsReducer,
   ingredientDetails: ingredientDetailsReducer,
   order: orderReducer,

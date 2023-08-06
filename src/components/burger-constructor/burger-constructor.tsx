@@ -38,8 +38,8 @@ const BurgerConstructor:FC = () => {
   const [orderAuth, setOrderAuth] = useState<boolean>(true);
 
   const dispatch = useDispatch();
-  const getUnLockedItems = (state: IState) => state.constructor.unLocked;
-  const getBunItem = (state: IState) => state.constructor.bun;
+  const getUnLockedItems = (state: IState) => state.constructorBurger.unLocked;
+  const getBunItem = (state: IState) => state.constructorBurger.bun;
   const getAuthStatus = (state: IState) => state.user.isAuth;
   const unLocked = useSelector(getUnLockedItems);
   const bun = useSelector(getBunItem);
@@ -73,10 +73,10 @@ const BurgerConstructor:FC = () => {
 
   const totalPrice = useMemo<number>(() => {
     let sum = 0;
-    if (unLocked !== undefined && unLocked.length) {
+    if (unLocked.length) {
       sum += unLocked.reduce((a, j) => a + (j.price || 0), 0)
     } 
-    if (bun !== undefined && bun.price) {
+    if (bun && bun.price) {
       sum += bun.price * 2
     } 
     return sum;

@@ -33,9 +33,9 @@ export interface IState {
         ingredientsFailed: boolean,
         currentTab: string
     },
-    constructor: {
+    constructorBurger: {
         unLocked: IIngredient[],
-        bun: IIngredient
+        bun: IIngredient | null
     },
     ingredientDetails?: IIngredient,
     order: {
@@ -73,23 +73,9 @@ export const initialState:IState = {
     
         currentTab: 'buns'
     },
-    constructor: {
+    constructorBurger: {
         unLocked: [],
-        bun: {
-            _id: '',
-            uuid: '',
-            name: '',
-            type: '',
-            price: NaN,
-            image: '',
-            calories: NaN,
-            carbohydrates: NaN,
-            fat: NaN,
-            proteins: NaN,
-            image_large: '',
-            image_mobile: '',
-            count: NaN,
-        }
+        bun: null
     },
     ingredientDetails: {
         _id: '',
