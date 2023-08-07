@@ -1,0 +1,39 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: 480px;
+    left: calc(50% - 480px/2);
+    top: 228px;
+} 
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.section {
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    width: 844px;
+    position: absolute;
+    left: calc(50% - 480px/2);
+
+}
+.section::-webkit-scrollbar
+{
+    width: 8px;
+	background-color: #8585AD;
+}
+.section::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #2F2F37;
+}
+.section::-webkit-scrollbar-thumb
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
+}

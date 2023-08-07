@@ -3,8 +3,7 @@ import { useDrop, useDrag } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from '../constructor-item/constructor-item.module.css';
-import { DELETE_INGREDIENT } from '../../services/actions/constructor';
-import { DECREASE_COUNT } from '../../services/actions/ingredients';
+import { DELETE_INGREDIENT, DECREASE_COUNT } from '../../services/constants/index';
 
 type Props = {
   name: string;

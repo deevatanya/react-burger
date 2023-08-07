@@ -20,13 +20,12 @@ import {
   ADD_UNLOCKED_INGREDIENT, 
   ADD_BUN_INGREDIENT, 
   DELETE_ALL_INGREDIENTS,
-  UPDATE_UNLOCKED
-} from '../../services/actions/constructor';
-import { 
+  UPDATE_UNLOCKED,
   CHANGE_COUNT_BUN, 
   INCREASE_COUNT, 
   REMOVE_COUNTS 
-} from '../../services/actions/ingredients';
+} from '../../services/constants/index';
+
 import { postOrder } from '../../services/actions/order';
 
 
@@ -39,8 +38,8 @@ const BurgerConstructor:FC = () => {
   const [orderAuth, setOrderAuth] = useState<boolean>(true);
 
   const dispatch = useDispatch();
-  const getUnLockedItems = (state: IState) => state.constructor.unLocked;
-  const getBunItem = (state: IState) => state.constructor.bun;
+  const getUnLockedItems = (state: IState) => state.constructorBurger.unLocked;
+  const getBunItem = (state: IState) => state.constructorBurger.bun;
   const getAuthStatus = (state: IState) => state.user.isAuth;
   const unLocked = useSelector(getUnLockedItems);
   const bun = useSelector(getBunItem);
@@ -59,6 +58,7 @@ const BurgerConstructor:FC = () => {
           id: info._id
         });
       } else {
+
         dispatch({
           type: ADD_UNLOCKED_INGREDIENT,
           info: info
@@ -76,7 +76,7 @@ const BurgerConstructor:FC = () => {
     if (unLocked.length) {
       sum += unLocked.reduce((a, j) => a + (j.price || 0), 0)
     } 
-    if (bun.price) {
+    if (bun && bun.price) {
       sum += bun.price * 2
     } 
     return sum;
@@ -86,7 +86,7 @@ const BurgerConstructor:FC = () => {
     if (!isAuth) {
       setOrderAuth(false);
     } else {
-      if (!bun.price) {
+      if (!bun) {
         alert('Выбери булку для своего бургера, не будь фитнес-занудой! :)');
       } else {
         const idsArray = unLocked.map(i => i._id);
@@ -146,7 +146,7 @@ const BurgerConstructor:FC = () => {
           <div className='mt-25'></div>
 
           <section ref={drop}>
-          { bun._id && (
+          { bun ? (
             <div className={style.item}>
               <div className='ml-8 top'>
                   <ConstructorElement
@@ -158,9 +158,9 @@ const BurgerConstructor:FC = () => {
                   />
               </div>
             </div>   
-          )}
+          ) : null }
 
-            { unLocked.length ? (unLocked.map((i: IIngredient, index: number) => (
+        { unLocked && unLocked.length ? (unLocked.map((i: IIngredient, index: number) => (
               <ConstructorItem 
                 name={i.name} 
                 price={i.price} 
@@ -172,8 +172,8 @@ const BurgerConstructor:FC = () => {
                 moveListItem={moveListItem}
               />
             ))) : null }
-  
-          { bun._id && (
+
+          { bun ? (
             <div className={style.item}>
               <div className='ml-8 bottom'>
                   <ConstructorElement
@@ -185,7 +185,7 @@ const BurgerConstructor:FC = () => {
                   />
               </div>
             </div>
-          )}
+          ) : null}
           </section>
 
           <div className='mt-10'></div>

@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import styles from './form.module.css';
 import { Button, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { postForgotPassword, getUser } from '../services/actions/user';
-import { constants } from '../constants';
-import { IState } from '../services/initialState';
+import { postForgotPassword, getUser } from '../../services/actions/user';
+import { constants } from '../../constants';
+import { IState } from '../../services/initialState';
 
 export const ResetPassword: FC = () => {
   const [form, setValue] = React.useState<{ password: string, token: string }>({ password: '', token: '' });

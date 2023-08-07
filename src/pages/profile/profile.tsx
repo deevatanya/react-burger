@@ -2,13 +2,11 @@ import { useState, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './profile.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { patchUser } from '../services/actions/user';
-import { Link } from 'react-router-dom';
-import { constants } from '../constants';
-import { postAuthLogout } from '../services/actions/user';
-import { IState } from '../services/initialState';
+import { patchUser } from '../../services/actions/user';
+import { constants } from '../../constants';
+import { IState } from '../../services/initialState';
+import ProfileMenu from '../../components/profile-menu/profile-menu';
 
-const { PATH } = constants;
 export const ProfilePage: FC = () => {
   const {
     name,
@@ -22,9 +20,7 @@ export const ProfilePage: FC = () => {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
-  const onLogout = () => {
-   postAuthLogout(`${constants.URL}/auth/logout`)(dispatch);
-  };
+
   const onNameClick = () => {
     setDisabled({...disabled, nameDisable: false});
     setButtonsVisible(true);
@@ -59,29 +55,7 @@ export const ProfilePage: FC = () => {
 
   return (
     <>
-      <div className={styles.tab}>
-        <div className={styles.tabs}>
-          <Link to={{ pathname: PATH.PROFILE }} className={styles.link}>
-            <p className="text text_type_main-medium">
-              Профиль
-            </p>
-          </Link>
-          <Link to={{ pathname: `${PATH.PROFILE}${PATH.ORDERS}` }} className={styles.link}>
-            <p className="text text_type_main-medium text_color_inactive">
-              История заказов
-            </p>
-          </Link>
-          <Link to={{pathname: PATH.LOGIN}} className={styles.link} onClick={onLogout}>
-            <p className="text text_type_main-medium text_color_inactive">
-              Выход
-            </p>
-          </Link>
-        </div>
-        <div className="mt-20"></div>
-        <p className="text text_type_main-default text_color_inactive">
-          В этом разделе вы можете изменить свои персональные данные
-        </p>
-      </div>
+      <ProfileMenu/>
       <div className={styles.content}>
         <form onSubmit={onSubmit} onReset={onReset}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>

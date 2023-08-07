@@ -11,7 +11,16 @@ export interface IIngredient {
     proteins: number;
     image_large: string;
     image_mobile: string;
-    count?: number;
+    count: number;
+};
+export interface IMessage {
+    status: string,
+    number: number,
+    createdAt: string,
+    updatedAt?: string
+    ingredients?: string[],
+    _id?: string,
+    name: string
 }
 export interface IState {
     ingredients: {
@@ -24,18 +33,17 @@ export interface IState {
         ingredientsFailed: boolean,
         currentTab: string
     },
-    constructor: {
+    constructorBurger: {
         unLocked: IIngredient[],
-        // поправить в 5м спринте при типизации стэйта FIXME
-        bun: IIngredient | any
+        bun: IIngredient | null
     },
-    // поправить в 5м спринте при типизации стэйта FIXME
-    ingredientDetails: IIngredient | any,
+    ingredientDetails?: IIngredient,
     order: {
         orders: [],
         orderRequest: boolean,
         orderFailed: boolean,
-        currentNumber: number | null
+        currentNumber: number | null,
+        orderData: IMessage
     },
     user: {
         isAuth: boolean,
@@ -43,8 +51,16 @@ export interface IState {
         authRequest: boolean,
         authFailed: boolean,
         data: {name: string, email: string},
+    },
+    ws: {
+        wsConnected: boolean,
+        messages: IMessage[];
+        total?: number,
+        totalToday?: number,
+        error?: Event,
     }
-}
+};
+
 export const initialState:IState = {
     ingredients: {
         ingredientsList: {
@@ -57,16 +73,39 @@ export const initialState:IState = {
     
         currentTab: 'buns'
     },
-    constructor: {
+    constructorBurger: {
         unLocked: [],
-        bun: {}
+        bun: null
     },
-    ingredientDetails: {},
+    ingredientDetails: {
+        _id: '',
+        uuid: '',
+        name: '',
+        type: '',
+        price: NaN,
+        image: '',
+        calories: NaN,
+        carbohydrates: NaN,
+        fat: NaN,
+        proteins: NaN,
+        image_large: '',
+        image_mobile: '',
+        count: NaN,
+    },
     order: {
         orders: [],
         orderRequest: false,
         orderFailed: false,
-        currentNumber: null
+        currentNumber: null,
+        orderData: {
+            ingredients: [],
+            _id: '',
+            status: '',
+            number: NaN,
+            createdAt: '',
+            updatedAt: '',
+            name: '',
+        }
     },
     user: {
         isAuth: false,
@@ -77,5 +116,9 @@ export const initialState:IState = {
             name: '',
             email: ''
         },
+    },
+    ws: {
+        wsConnected: false,
+        messages: []
     }
   };

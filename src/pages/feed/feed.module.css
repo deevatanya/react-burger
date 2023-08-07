@@ -1,0 +1,22 @@
+.info {
+    margin-left: 60px;
+    display: flex;
+    flex-direction: column;
+    width: 580px;
+}
+.total {
+    margin-top: 60px;
+}
+.status {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.status div {
+    width: 272px;
+    display: flex;
+    flex-direction: column;
+}
+.done {
+    color: #00CCCC;
+}

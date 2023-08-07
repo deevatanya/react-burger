@@ -1,0 +1,23 @@
+import { LoginPage } from './auth/login';
+import { HomePage } from './home/home';
+import { NotFound404 } from './not-found/not-found';
+import { RegisterPage } from './auth/register';
+import { ForgotPassword } from './auth/forgot-password';
+import { ResetPassword } from './auth/reset-password';
+import { ProfilePage } from './profile/profile';
+import { IngredientPage } from './ingredient/ingredient';
+import { FeedPage } from './feed/feed';
+import { OrderPage } from './order/order';
+import { HistoryPage } from './profile/history';
+
+export {HomePage};
+export {LoginPage};
+export {NotFound404};
+export {RegisterPage};
+export {ForgotPassword};
+export {ResetPassword};
+export {ProfilePage};
+export {IngredientPage};
+export {FeedPage};
+export {OrderPage};
+export {HistoryPage};

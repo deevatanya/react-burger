@@ -6,10 +6,11 @@ import {
   INCREASE_COUNT, 
   DECREASE_COUNT,
   REMOVE_COUNTS
-} from '../actions/ingredients';
-import { initialState } from '../initialState';
+} from '../constants';
+import { initialState, IState } from '../initialState';
+import { TIngredientsActions } from '../actions/ingredients';
 
-export const ingredientsReducer = (state = initialState.ingredients, action) => {
+export const ingredientsReducer = (state: IState['ingredients'] = initialState.ingredients, action: TIngredientsActions) => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {  
       return {

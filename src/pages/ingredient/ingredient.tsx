@@ -2,13 +2,13 @@ import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { constants } from '../constants';
-import IngredientDetails from '../components/ingredient-details/ingredient-details';
-import { getIngredients } from '../services/actions/ingredients';
+import { constants } from '../../constants';
+import IngredientDetails from '../../components/ingredient-details/ingredient-details';
+import { getIngredients } from '../../services/actions/ingredients';
 import { 
     SET_INGREDIENT_DETAILS, 
-} from '../services/actions/ingredientDetails';
-import { IState } from '../services/initialState';
+} from '../../services/constants/index';
+import { IState } from '../../services/initialState';
 
 export const IngredientPage: FC = () => {
   const currentId: string | undefined = useParams().id;
@@ -20,10 +20,9 @@ export const IngredientPage: FC = () => {
   const { mains, buns, sauces} = useSelector(getIngredientsList);
 
 
-useEffect(() => {
-	getIngredients(`${constants.URL}/ingredients`)(dispatch);
-
-}, [dispatch]);
+	useEffect(() => {
+		getIngredients(`${constants.URL}/ingredients`)(dispatch);
+	}, [dispatch]);
 
 	useEffect(() => {
 		const ingredients = [...mains, ...buns, ...sauces];
@@ -33,7 +32,7 @@ useEffect(() => {
     
   return (
     <>
-			{!ingredientDetails._id ?
+			{!ingredientDetails ?
 			(<div className='center_info'>
 				<p className="text text_type_main-large">
 					Ингредиент не найден

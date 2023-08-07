@@ -1,8 +1,10 @@
+import { IState } from '../../services/initialState';
 import style from './ingredient-details.module.css';
 import { useSelector } from 'react-redux';
 
 function IngredientDetails() {
-    const getIngredientDetails = (state) => state.ingredientDetails;
+    const getIngredientDetails = (state: IState) => state.ingredientDetails;
+    //@ts-ignore
     const { calories, proteins, fat, carbohydrates, image_large, type, name } = useSelector(getIngredientDetails);
     return(
         <div className={style.body}>

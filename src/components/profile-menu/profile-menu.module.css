@@ -1,0 +1,16 @@
+.tab {
+    position: absolute;
+    left: 380px;
+    top: 228px;
+    width: 320px;
+}
+.tabs {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.link {
+    height: 64px;
+    text-decoration: none;
+    color: #F2F2F3;
+}
