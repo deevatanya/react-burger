@@ -30,6 +30,7 @@
     "test": "react-scripts test",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
+    "deploy-script": "npm run build && scp -r ./build/* procoder@84.201.152.65:/home/procoder/stellar-front",
     "eject": "react-scripts eject",
     "cypress:open": "./node_modules/.bin/cypress open"
   },
