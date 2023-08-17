@@ -1,6 +1,7 @@
-# Getting Started with Create React App
+# Use links with this app:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+https://cat.nomoreparties.co/
+https://deevatanya.github.io/react-burger/
 
 ## Available Scripts
 
