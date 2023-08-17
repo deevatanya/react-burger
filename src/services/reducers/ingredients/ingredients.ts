@@ -6,11 +6,11 @@ import {
   INCREASE_COUNT, 
   DECREASE_COUNT,
   REMOVE_COUNTS
-} from '../constants';
-import { initialState, IState } from '../initialState';
-import { TIngredientsActions } from '../actions/ingredients';
+} from '../../constants';
+import { initialState, IState } from '../../initialState';
+import { TIngredientsActions } from '../../actions/ingredients';
 
-export const ingredientsReducer = (state: IState['ingredients'] = initialState.ingredients, action: TIngredientsActions) => {
+export default function ingredientsReducer(state: IState['ingredients'] = initialState.ingredients, action: TIngredientsActions) {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {  
       return {
@@ -71,6 +71,7 @@ export const ingredientsReducer = (state: IState['ingredients'] = initialState.i
     }
     case DECREASE_COUNT: {
       return {
+        ...state,
         ingredientsList: {
           ...state.ingredientsList,
           mains: [...state.ingredientsList.mains].map(item =>

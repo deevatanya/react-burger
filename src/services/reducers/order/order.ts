@@ -1,8 +1,8 @@
-import { POST_ORDER_FAILED, POST_ORDER_REQUEST, POST_ORDER_SUCCESS, SET_ORDER_DETAILS } from '../constants';
-import { initialState, IState } from '../initialState';
-import { TOrderActions } from '../actions/order';
+import { POST_ORDER_FAILED, POST_ORDER_REQUEST, POST_ORDER_SUCCESS, SET_ORDER_DETAILS } from '../../constants';
+import { initialState, IState } from '../../initialState';
+import { TOrderActions } from '../../actions/order';
 
-export const orderReducer = (state: IState['order'] = initialState.order, action: TOrderActions) => {
+export default function orderReducer(state: IState['order'] = initialState.order, action: TOrderActions) {
   switch (action.type) {
     case POST_ORDER_REQUEST: {  
       return {
