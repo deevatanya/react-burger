@@ -4,11 +4,11 @@ import {
   DELETE_INGREDIENT, 
   DELETE_ALL_INGREDIENTS,
   UPDATE_UNLOCKED
-} from '../constants';
-import { initialState, IState } from '../initialState';
-import { TConstructorActions } from '../actions/constructor';
+} from '../../constants';
+import { initialState, IState } from '../../initialState';
+import { TConstructorActions } from '../../actions/constructor';
 
-export const constructorReducer = (state: IState['constructorBurger'] = initialState.constructorBurger, action: TConstructorActions) => {
+export default function constructorReducer(state: IState['constructorBurger'] = initialState.constructorBurger, action: TConstructorActions) {
   switch (action.type) {
     case DELETE_INGREDIENT: {
       return { 

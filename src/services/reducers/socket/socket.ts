@@ -3,11 +3,11 @@ import {
     WS_CONNECTION_ERROR,
     WS_CONNECTION_CLOSED,
     WS_GET_MESSAGE
-  } from '../constants';
-import type {TWSActions } from '../actions/socket';
-import { initialState, IState, IMessage } from '../initialState';
+  } from '../../constants';
+import type {TWSActions } from '../../actions/socket';
+import { initialState, IState, IMessage } from '../../initialState';
 
-export const wsReducer = (state: IState['ws'] = initialState.ws, action: TWSActions) => {
+export default function wsReducer (state: IState['ws'] = initialState.ws, action: TWSActions) {
 switch (action.type) {
     case WS_CONNECTION_SUCCESS:
     return {
@@ -40,7 +40,8 @@ switch (action.type) {
         totalToday: ordersParsed.totalToday,
         wsConnected: true
     };
-    default:
-    return state;
+    default: {
+        return state;
+    }
 }
 };
